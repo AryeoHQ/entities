@@ -1,0 +1,56 @@
+{
+    "name": "aryeo/entities",
+    "type": "library",
+    "repositories": {
+        "tooling-laravel": {
+            "type": "vcs",
+            "url": "https://github.com/AryeoHQ/tooling-laravel"
+        }
+    },
+    "require": {
+        "laravel/framework": "^12.37",
+        "nikic/php-parser": "^5.7",
+        "phpstan/phpstan": "^2.1",
+        "rector/rector": "^2.3"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.6",
+        "aryeo/tooling-laravel": "^0.0.7",
+        "phpunit/phpunit": "^12.4.1",
+        "nesbot/carbon": "^3.10",
+        "orchestra/testbench-core": "^10.7",
+        "pestphp/pest": "^4.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Support\\": "src/Support",
+            "Tooling\\": "src/Tooling"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Justin Seliga",
+            "email": "justinsel@zillowgroup.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "config": {
+        "allow-plugins": {
+            "aryeo/tooling-laravel": true,
+            "pestphp/pest-plugin": true
+        }
+    },
+    "extra": {
+        "tooling": {
+            "rector": {
+                "rules": "tooling/rector/rules.php"
+            },
+            "phpstan": "tooling/phpstan/rules.neon"
+        }
+    }
+}

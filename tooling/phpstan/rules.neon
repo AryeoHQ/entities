@@ -1,0 +1,5 @@
+services:
+    -
+        class: Tooling\Entities\PhpStan\ModelMustImplementEntity
+        tags:
+            - phpstan.rules.rule
