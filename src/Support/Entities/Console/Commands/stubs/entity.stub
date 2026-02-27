@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ domainModelDirectoryNamespace }};
+
+use Support\Entities\Contracts\Entity;
+
+class {{ domainModelName }} implements Entity
+{
+    //
+}

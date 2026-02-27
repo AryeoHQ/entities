@@ -1,0 +1,28 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use {{ domainModelNamespace }};
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<{{ domainModelName }}>
+ */
+final class Factory extends \Illuminate\Database\Eloquent\Factories\Factory
+{
+    /**
+     * @var class-string<{{ domainModelName }}>
+     */
+    protected $model = {{ domainModelName }}::class;
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            //
+        ];
+    }
+}
