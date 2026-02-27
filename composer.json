@@ -5,17 +5,23 @@
         "tooling-laravel": {
             "type": "vcs",
             "url": "https://github.com/AryeoHQ/tooling-laravel"
+        },
+        "eloquent-filters": {
+            "type": "vcs",
+            "url": "https://github.com/AryeoHQ/eloquent-filters"
         }
     },
     "require": {
+        "aryeo/eloquent-filters": "^0.0.1",
         "laravel/framework": "^12.37",
+        "laravel/prompts": "^0.3.8",
         "nikic/php-parser": "^5.7",
         "phpstan/phpstan": "^2.1",
-        "rector/rector": "^2.3"
+        "symfony/console": "^7.4",
+        "aryeo/tooling-laravel": "0.0.22"
     },
     "require-dev": {
         "orchestra/testbench": "^10.6",
-        "aryeo/tooling-laravel": "^0.0.7",
         "phpunit/phpunit": "^12.4.1",
         "nesbot/carbon": "^3.10",
         "orchestra/testbench-core": "^10.7",
@@ -23,12 +29,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Support\\": "src/Support",
-            "Tooling\\": "src/Tooling"
-        }
+            "Support\\Entities\\": "src/Support/Entities",
+            "Tooling\\Entities\\": "src/Tooling/Entities"
+        },
+        "exclude-from-classmap": [
+            "*Test.php",
+            "*TestCases.php",
+            "/tests/"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
+            "App\\": "vendor/orchestra/testbench-core/laravel/app/",
             "Tests\\": "tests/"
         }
     },
@@ -46,9 +58,14 @@
         }
     },
     "extra": {
+        "laravel": {
+            "providers": [
+                "Support\\Entities\\Providers\\Provider"
+            ]
+        },
         "tooling": {
             "rector": {
-                "rules": "tooling/rector/rules.php"
+                "configured_rules": "tooling/rector/configured-rules.php"
             },
             "phpstan": "tooling/phpstan/rules.neon"
         }

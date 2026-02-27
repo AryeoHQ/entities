@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Support\Entities\Events\Attributes\BroadcastAs;
+use Support\Entities\Events\Contracts\ForEntity;
+use Support\Entities\Events\Provides\EntityDriven;
+use {{ domainModelNamespace }};
+
+#[BroadcastAs('{{ domainModelSemanticEventName }}')]
+final class {{ class }} implements ForEntity
+{
+    use EntityDriven;
+
+    public readonly {{ domainModelName }} $entity;
+
+    public function __construct({{ domainModelName }} $entity)
+    {
+        $this->entity = $entity;
+    }
+
+    /**
+     * @return array<int, Channel>
+     */
+    public function broadcastOn(): array
+    {
+        return [
+            new PrivateChannel($this->uniqueName),
+        ];
+    }
+}

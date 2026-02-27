@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use Illuminate\Contracts\Auth\Authenticatable;
+use {{ domainModelNamespace }};
+
+final class Policy
+{
+    public function view(Authenticatable $user, {{ domainModelName }} ${{ domainModelVariableName }}): bool
+    {
+        return true;
+    }
+}

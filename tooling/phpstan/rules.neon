@@ -1,5 +1,52 @@
+parameters:
+    ignoreErrors:
+        -
+            identifier: trait.unused
+            paths:
+                - ../../src/Support/Entities/Events/Provides/EntityDriven.php
+
 services:
     -
         class: Tooling\Entities\PhpStan\ModelMustImplementEntity
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\EntityMustHaveBroadcastAs
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\ModelMustHaveHasUuids
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\ForEntityMustHaveEntityDriven
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\ModelMustHaveCollectedBy
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\ModelMustHaveUseEloquentBuilder
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\ModelMustHaveUseFactory
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\ModelMustHaveUsePolicy
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\ModelMustHaveHasFactory
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\FactoryMustNotBeUsedDirectly
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\ModelMustNotDefineScopeMethods
         tags:
             - phpstan.rules.rule
