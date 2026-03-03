@@ -9,7 +9,6 @@ use Illuminate\Support\ServiceProvider;
 use Support\Entities\Console\Commands\MakeEntity;
 use Support\Entities\Console\Commands\MakePolicy;
 use Support\Entities\Console\Commands\MakeProvider;
-use Support\Entities\Console\Commands\MakeTestClass;
 use Support\Entities\Models\Console\Commands\MakeBuilder;
 use Support\Entities\Models\Console\Commands\MakeCollection;
 use Support\Entities\Models\Console\Commands\MakeEvent;
@@ -29,7 +28,6 @@ class Provider extends ServiceProvider
             MakeModel::class,
             MakePolicy::class,
             MakeProvider::class,
-            MakeTestClass::class,
         ]);
     }
 

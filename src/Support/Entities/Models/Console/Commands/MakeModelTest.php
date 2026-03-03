@@ -12,13 +12,13 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Orchestra\Testbench\Concerns\InteractsWithPublishedFiles;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Console\Concerns\GeneratesFileTestCases;
-use Support\Entities\Console\Concerns\ResolvesNamespaceTestCases;
 use Support\Entities\Contracts\Entity as EntityContract;
-use Support\Entities\References\Contracts\Reference;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
+use Tooling\GeneratorCommands\References\Contracts\Reference;
+use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
+use Tooling\GeneratorCommands\Testing\Concerns\RetrievesNamespaceFromInputTestCases;
 
 #[CoversClass(MakeModel::class)]
 class MakeModelTest extends TestCase implements TestsGeneratesEntity
@@ -26,7 +26,7 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
     use GeneratesFileTestCases;
     use InteractsWithPublishedFiles; // @phpstan-ignore-line
     use ProvidesModel;
-    use ResolvesNamespaceTestCases;
+    use RetrievesNamespaceFromInputTestCases;
 
     /** @var array<array-key, string> */
     protected array $files {

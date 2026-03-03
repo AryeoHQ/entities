@@ -6,15 +6,15 @@ namespace Support\Entities\Models\Console\Commands;
 
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
 use Illuminate\Support\Stringable;
-use Support\Entities\Console\Concerns\CreatesColocatedTests;
-use Support\Entities\Console\Concerns\GeneratorCommandCompatibility;
 use Support\Entities\Console\Concerns\RetrievesEntityFromArgument;
-use Support\Entities\Console\Concerns\SearchesClasses;
-use Support\Entities\Console\Concerns\SearchesNamespaces;
 use Support\Entities\Console\Contracts\GeneratesForEntity;
 use Support\Entities\Models\Console\Concerns\ResolvesModel;
 use Support\Entities\Models\References\Factory;
 use Symfony\Component\Console\Input\InputOption;
+use Tooling\GeneratorCommands\Concerns\CreatesColocatedTests;
+use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
+use Tooling\GeneratorCommands\Concerns\SearchesClasses;
+use Tooling\GeneratorCommands\Concerns\SearchesNamespaces;
 
 class MakeFactory extends FactoryMakeCommand implements GeneratesForEntity
 {

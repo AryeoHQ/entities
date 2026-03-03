@@ -6,15 +6,15 @@ namespace Support\Entities\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Stringable;
-use Support\Entities\Console\Concerns\CreatesColocatedTests;
-use Support\Entities\Console\Concerns\GeneratorCommandCompatibility;
-use Support\Entities\Console\Concerns\ResolvesNamespace;
-use Support\Entities\Console\Concerns\SearchesNamespaces;
 use Support\Entities\Console\Contracts\GeneratesEntity;
 use Support\Entities\References;
 use Support\Entities\References\Contracts\Entity as EntityReference;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
+use Tooling\GeneratorCommands\Concerns\CreatesColocatedTests;
+use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
+use Tooling\GeneratorCommands\Concerns\RetrievesNamespaceFromInput;
+use Tooling\GeneratorCommands\Concerns\SearchesNamespaces;
 
 use function Laravel\Prompts\confirm;
 
@@ -23,7 +23,7 @@ class MakeEntity extends GeneratorCommand implements GeneratesEntity
 {
     use CreatesColocatedTests;
     use GeneratorCommandCompatibility;
-    use ResolvesNamespace;
+    use RetrievesNamespaceFromInput;
     use SearchesNamespaces;
 
     public protected(set) References\Contracts\Entity $entity;

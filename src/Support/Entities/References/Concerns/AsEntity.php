@@ -7,8 +7,8 @@ namespace Support\Entities\References\Concerns;
 use Illuminate\Support\Stringable;
 use Support\Entities\References\Policy;
 use Support\Entities\References\Provider;
-use Support\Entities\References\TestClass;
 use Tooling\Composer\Composer;
+use Tooling\GeneratorCommands\References\TestClass;
 
 trait AsEntity
 {

@@ -6,12 +6,14 @@ namespace Support\Entities\References;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use Support\Entities\References\Concerns\RequiresEntityTestCases;
-use Tests\Support\Entities\References\Contracts\TestsReference;
 use Tests\TestCase;
+use Tooling\GeneratorCommands\Testing\Concerns\ReferenceTestCases;
+use Tooling\GeneratorCommands\Testing\Contracts\TestsReference;
 
 #[CoversClass(Provider::class)]
 class ProviderTest extends TestCase implements TestsReference
 {
+    use ReferenceTestCases;
     use RequiresEntityTestCases;
 
     public Provider $subject {

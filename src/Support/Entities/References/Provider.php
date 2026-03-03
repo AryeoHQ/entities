@@ -7,7 +7,7 @@ namespace Support\Entities\References;
 use Illuminate\Support\Stringable;
 use Support\Entities\References\Concerns\RequiresEntity;
 use Support\Entities\References\Contracts\Entity;
-use Support\Entities\References\Contracts\Reference;
+use Tooling\GeneratorCommands\References\Contracts\Reference;
 
 final class Provider implements Reference
 {
