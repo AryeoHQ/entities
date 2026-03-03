@@ -9,14 +9,14 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Console\ProviderMakeCommand;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Stringable;
-use Support\Entities\Console\Concerns\GeneratorCommandCompatibility;
 use Support\Entities\Console\Concerns\ResolvesEntity;
 use Support\Entities\Console\Concerns\RetrievesEntityFromArgument;
-use Support\Entities\Console\Concerns\SearchesClasses;
-use Support\Entities\Console\Concerns\SearchesNamespaces;
 use Support\Entities\Console\Contracts\GeneratesForEntity;
 use Support\Entities\References\Provider;
 use Symfony\Component\Console\Input\InputOption;
+use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
+use Tooling\GeneratorCommands\Concerns\SearchesClasses;
+use Tooling\GeneratorCommands\Concerns\SearchesNamespaces;
 
 class MakeProvider extends ProviderMakeCommand implements GeneratesForEntity
 {

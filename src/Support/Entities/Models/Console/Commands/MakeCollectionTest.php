@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Orchestra\Testbench\Concerns\InteractsWithPublishedFiles;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Console\Concerns\GeneratesFileTestCases;
 use Support\Entities\Console\Concerns\ResolvesEntityTestCases;
-use Support\Entities\References\Contracts\Reference;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
+use Tooling\GeneratorCommands\References\Contracts\Reference;
+use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 
 #[CoversClass(MakeCollection::class)]
 class MakeCollectionTest extends TestCase implements TestsGeneratesForEntity

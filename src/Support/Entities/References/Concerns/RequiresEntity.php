@@ -6,8 +6,8 @@ namespace Support\Entities\References\Concerns;
 
 use Illuminate\Support\Stringable;
 use Support\Entities\References\Contracts\Entity;
-use Support\Entities\References\TestClass;
 use Tooling\Composer\Composer;
+use Tooling\GeneratorCommands\References\TestClass;
 
 trait RequiresEntity
 {

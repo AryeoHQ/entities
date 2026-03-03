@@ -7,6 +7,7 @@ namespace Support\Entities\References\Contracts;
 use Illuminate\Support\Stringable;
 use Support\Entities\References\Policy;
 use Support\Entities\References\Provider;
+use Tooling\GeneratorCommands\References\Contracts\Reference;
 
 interface Entity extends Reference
 {

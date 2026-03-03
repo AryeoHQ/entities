@@ -11,7 +11,6 @@ use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\Console\Commands\MakeEntity;
 use Support\Entities\Console\Commands\MakePolicy;
 use Support\Entities\Console\Commands\MakeProvider;
-use Support\Entities\Console\Commands\MakeTestClass;
 use Support\Entities\Models\Console\Commands\MakeBuilder;
 use Support\Entities\Models\Console\Commands\MakeCollection;
 use Support\Entities\Models\Console\Commands\MakeEvent;
@@ -36,7 +35,6 @@ class ProviderTest extends TestCase
             'MakeModel' => [MakeModel::class],
             'MakePolicy' => [MakePolicy::class],
             'MakeProvider' => [MakeProvider::class],
-            'MakeTestClass' => [MakeTestClass::class],
         ];
     }
 
@@ -70,14 +68,6 @@ class ProviderTest extends TestCase
         $resolved = $this->app->make(MakeProvider::class);
 
         $this->assertSame('make:provider', $resolved->getName());
-    }
-
-    #[Test]
-    public function it_overrides_make_test(): void
-    {
-        $resolved = $this->app->make(MakeTestClass::class);
-
-        $this->assertSame('make:test', $resolved->getName());
     }
 
     #[Test]

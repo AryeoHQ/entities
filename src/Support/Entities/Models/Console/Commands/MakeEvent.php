@@ -6,13 +6,13 @@ namespace Support\Entities\Models\Console\Commands;
 
 use Illuminate\Foundation\Console\EventMakeCommand;
 use Illuminate\Support\Stringable;
-use Support\Entities\Console\Concerns\GeneratorCommandCompatibility;
 use Support\Entities\Console\Concerns\RetrievesEntityFromOption;
-use Support\Entities\Console\Concerns\SearchesClasses;
-use Support\Entities\Console\Concerns\SearchesNamespaces;
 use Support\Entities\Console\Contracts\GeneratesForEntity;
 use Support\Entities\Models\Console\Concerns\ResolvesModel;
 use Support\Entities\Models\References\Event;
+use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
+use Tooling\GeneratorCommands\Concerns\SearchesClasses;
+use Tooling\GeneratorCommands\Concerns\SearchesNamespaces;
 
 class MakeEvent extends EventMakeCommand implements GeneratesForEntity
 {

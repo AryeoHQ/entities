@@ -8,12 +8,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\References\Concerns\RequiresEntityTestCases;
 use Support\Entities\References\Entity;
-use Tests\Support\Entities\References\Contracts\TestsReference;
 use Tests\TestCase;
+use Tooling\GeneratorCommands\Testing\Concerns\ReferenceTestCases;
+use Tooling\GeneratorCommands\Testing\Contracts\TestsReference;
 
 #[CoversClass(Event::class)]
 class EventTest extends TestCase implements TestsReference
 {
+    use ReferenceTestCases;
     use RequiresEntityTestCases;
 
     public Event $subject {

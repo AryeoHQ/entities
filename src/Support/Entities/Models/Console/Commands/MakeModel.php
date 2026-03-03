@@ -16,16 +16,16 @@ use Illuminate\Foundation\Console\ModelMakeCommand;
 use Illuminate\Support\Stringable;
 use Support\Entities\Console\Commands\MakePolicy;
 use Support\Entities\Console\Commands\MakeProvider;
-use Support\Entities\Console\Concerns\CreatesColocatedTests;
-use Support\Entities\Console\Concerns\GeneratorCommandCompatibility;
-use Support\Entities\Console\Concerns\ResolvesNamespace;
-use Support\Entities\Console\Concerns\SearchesNamespaces;
 use Support\Entities\Console\Contracts\GeneratesEntity;
 use Support\Entities\Contracts\Entity as EntityContract;
 use Support\Entities\Models\References\Model;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Tooling\GeneratorCommands\Concerns\CreatesColocatedTests;
+use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
+use Tooling\GeneratorCommands\Concerns\RetrievesNamespaceFromInput;
+use Tooling\GeneratorCommands\Concerns\SearchesNamespaces;
 
 use function collect;
 
@@ -33,7 +33,7 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
 {
     use CreatesColocatedTests;
     use GeneratorCommandCompatibility;
-    use ResolvesNamespace;
+    use RetrievesNamespaceFromInput;
     use SearchesNamespaces;
 
     protected $description = 'Create a new Model entity.';

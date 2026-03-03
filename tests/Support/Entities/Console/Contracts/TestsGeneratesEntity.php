@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Support\Entities\Console\Contracts;
 
 use Support\Entities\References\Contracts\Entity;
-use Support\Entities\References\Contracts\Reference;
+use Tooling\GeneratorCommands\References\Contracts\Reference;
 
 interface TestsGeneratesEntity
 {

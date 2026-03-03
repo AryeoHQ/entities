@@ -7,15 +7,15 @@ namespace Support\Entities\Models\Console\Commands;
 use Orchestra\Testbench\Concerns\InteractsWithPublishedFiles;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Console\Concerns\GeneratesFileTestCases;
 use Support\Entities\Console\Concerns\ResolvesEntityTestCases;
 use Support\Entities\Events\Attributes\BroadcastAs;
 use Support\Entities\Events\Contracts\ForEntity;
 use Support\Entities\Events\Provides\EntityDriven;
-use Support\Entities\References\Contracts\Reference;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
+use Tooling\GeneratorCommands\References\Contracts\Reference;
+use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 
 #[CoversClass(MakeEvent::class)]
 class MakeEventTest extends TestCase implements TestsGeneratesForEntity
