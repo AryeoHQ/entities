@@ -15,7 +15,7 @@ use Tests\Support\Entities\Console\Contracts\TestsGeneratesEntity;
 use Tests\TestCase;
 use Tooling\GeneratorCommands\References\Contracts\Reference;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
-use Tooling\GeneratorCommands\Testing\Concerns\RetrievesNamespaceFromInputTestCases;
+use Tooling\GeneratorCommands\Testing\Concerns\RetrievesNamespaceTestCases;
 
 #[CoversClass(MakeEntity::class)]
 class MakeEntityTest extends TestCase implements TestsGeneratesEntity
@@ -23,7 +23,7 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
     use GeneratesFileTestCases;
     use InteractsWithPublishedFiles; // @phpstan-ignore-line
     use ProvidesEntity;
-    use RetrievesNamespaceFromInputTestCases;
+    use RetrievesNamespaceTestCases;
 
     /** @var array<array-key, string> */
     protected array $files {

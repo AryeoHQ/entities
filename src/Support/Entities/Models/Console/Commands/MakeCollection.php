@@ -6,26 +6,23 @@ namespace Support\Entities\Models\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Stringable;
-use Support\Entities\Console\Concerns\RetrievesEntityFromArgument;
 use Support\Entities\Console\Contracts\GeneratesForEntity;
-use Support\Entities\Models\Console\Concerns\ResolvesModel;
+use Support\Entities\Models\Console\Concerns\RetrievesModel;
 use Support\Entities\Models\References\Collection;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Tooling\GeneratorCommands\Concerns\CreatesColocatedTests;
 use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
 use Tooling\GeneratorCommands\Concerns\SearchesClasses;
-use Tooling\GeneratorCommands\Concerns\SearchesNamespaces;
 
 #[AsCommand(name: 'make:collection')]
 class MakeCollection extends GeneratorCommand implements GeneratesForEntity
 {
     use CreatesColocatedTests;
     use GeneratorCommandCompatibility;
-    use ResolvesModel;
-    use RetrievesEntityFromArgument;
+    use RetrievesModel;
     use SearchesClasses;
-    use SearchesNamespaces;
 
     protected $type = 'Collection';
 
@@ -57,6 +54,19 @@ class MakeCollection extends GeneratorCommand implements GeneratesForEntity
             $this->entity->fqcn->toString(),
             $this->entity->plural->toString(),
         ], parent::buildClass($name));
+    }
+
+    /** @return array<int, InputArgument> */
+    protected function getArguments(): array
+    {
+        return [
+            ...$this->getEntityInputArguments(),
+        ];
+    }
+
+    protected function promptForMissingArgumentsUsing(): array
+    {
+        return $this->getEntityPromptForMissingArguments();
     }
 
     /** @return array<int, InputOption> */

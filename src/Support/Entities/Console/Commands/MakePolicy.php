@@ -7,27 +7,24 @@ namespace Support\Entities\Console\Commands;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Foundation\Console\PolicyMakeCommand;
 use Illuminate\Support\Stringable;
-use Support\Entities\Console\Concerns\ResolvesEntity;
-use Support\Entities\Console\Concerns\RetrievesEntityFromArgument;
+use Support\Entities\Console\Concerns\RetrievesEntity;
 use Support\Entities\Console\Contracts\GeneratesForEntity;
 use Support\Entities\References\Policy;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Tooling\GeneratorCommands\Concerns\CreatesColocatedTests;
 use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
 use Tooling\GeneratorCommands\Concerns\SearchesClasses;
-use Tooling\GeneratorCommands\Concerns\SearchesNamespaces;
 
 class MakePolicy extends PolicyMakeCommand implements GeneratesForEntity
 {
     use CreatesColocatedTests;
     use GeneratorCommandCompatibility;
 
-    /** @use ResolvesEntity<\Support\Entities\References\Entity> */
-    use ResolvesEntity;
+    /** @use RetrievesEntity<\Support\Entities\References\Entity> */
+    use RetrievesEntity;
 
-    use RetrievesEntityFromArgument;
     use SearchesClasses;
-    use SearchesNamespaces;
 
     public string $stub = __DIR__.'/stubs/policy/policy.stub';
 
@@ -43,7 +40,8 @@ class MakePolicy extends PolicyMakeCommand implements GeneratesForEntity
     {
         $this->resolveEntity();
 
-        parent::handle();
+        // Does not call parent::handle() to skip base command's operations
+        GeneratorCommand::handle();
 
         return self::SUCCESS; // @phpstan-ignore return.type
     }
@@ -59,6 +57,19 @@ class MakePolicy extends PolicyMakeCommand implements GeneratesForEntity
             $this->entity->name->toString(),
             $this->entity->variableName->toString(),
         ], GeneratorCommand::buildClass($name)); // Does not call parent::buildClass() to skip base command's operations
+    }
+
+    /** @return array<int, InputArgument> */
+    protected function getArguments(): array
+    {
+        return [
+            ...$this->getEntityInputArguments(),
+        ];
+    }
+
+    protected function promptForMissingArgumentsUsing(): array
+    {
+        return $this->getEntityPromptForMissingArguments();
     }
 
     /** @return array<int, InputOption> */

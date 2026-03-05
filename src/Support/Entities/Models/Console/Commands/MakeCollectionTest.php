@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Orchestra\Testbench\Concerns\InteractsWithPublishedFiles;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Console\Concerns\ResolvesEntityTestCases;
+use Support\Entities\Console\Concerns\RetrievesEntityTestCases;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
@@ -21,7 +21,7 @@ class MakeCollectionTest extends TestCase implements TestsGeneratesForEntity
     use GeneratesFileTestCases;
     use InteractsWithPublishedFiles; // @phpstan-ignore-line
     use ProvidesModel;
-    use ResolvesEntityTestCases;
+    use RetrievesEntityTestCases;
 
     /** @var array<array-key, string> */
     protected array $files {

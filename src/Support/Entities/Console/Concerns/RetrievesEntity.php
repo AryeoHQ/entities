@@ -5,20 +5,25 @@ declare(strict_types=1);
 namespace Support\Entities\Console\Concerns;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Stringable;
 use ReflectionClass;
 use Support\Entities;
 use Support\Entities\References\Entity;
 use Tooling\Composer\Composer;
 
 use function Laravel\Prompts\search;
+use function Laravel\Prompts\select;
 
 /**
  * @template TEntity of Entities\References\Contracts\Entity
  *
  * @mixin \Illuminate\Console\GeneratorCommand
  */
-trait ResolvesEntity
+trait RetrievesEntity
 {
+    use RetrievesEntityFromArgument;
+    use RetrievesEntityFromOption;
+
     /** @var TEntity */
     public protected(set) Entities\References\Contracts\Entity $entity;
 
@@ -31,43 +36,46 @@ trait ResolvesEntity
         return $classes->filter(fn (string $class) => $this->isSearchableEntity($class));
     }
 
-    protected function resolveEntity(): void
+    public function retrieveEntity(): Stringable
     {
-        $this->entity = $this->entityFromInput() ?? $this->entityFromPrompt();
+        $input = $this->entityFromOption() ?? $this->entityFromArgument();
+
+        return $input !== null ? $this->qualifyEntityName($input) : $this->entityFromPrompt();
     }
 
-    protected function entityFromInput(): null|Entity
+    protected function qualifyEntityName(Stringable $name): Stringable
     {
-        $provided = $this->entityInput;
-
-        if ($provided->isEmpty()) {
-            return null;
+        if ($name->contains('\\')) {
+            return $name;
         }
 
-        if ($provided->contains('\\')) {
-            return Entity::fromFqcn($provided);
-        }
+        $matches = $this->searchableClasses
+            ->filter(fn (string $class) => str(class_basename($class))->lower()->exactly($name->lower()->toString()));
 
-        $fqcn = str($this->availableNamespaces->keys()->first())
-            ->finish('\\')
-            ->append('Entities\\')
-            ->append($provided->plural()->toString())
-            ->append('\\')
-            ->append($provided->singular()->toString());
-
-        return Entity::fromFqcn($fqcn);
+        return match ($matches->count()) {
+            0 => $this->entityFromPrompt(),
+            1 => str($matches->first()),
+            default => str(select(
+                label: "Multiple entities found matching [{$name}]:",
+                options: $matches->values()->all(),
+                required: true,
+            )),
+        };
     }
 
-    protected function entityFromPrompt(): Entity
+    public function resolveEntity(): void
     {
-        $fqcn = search(
+        $this->entity = Entity::fromFqcn($this->retrieveEntity()); // @phpstan-ignore assign.propertyType
+    }
+
+    public function entityFromPrompt(): Stringable
+    {
+        return str(search(
             label: 'Which entity?',
             options: fn ($search) => $this->getClassSearchResults($search),
             required: true,
             scroll: 5,
-        );
-
-        return Entity::fromFqcn($fqcn);
+        ));
     }
 
     protected function isSearchableEntity(string $class): bool

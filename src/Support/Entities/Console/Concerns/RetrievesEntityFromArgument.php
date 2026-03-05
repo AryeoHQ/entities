@@ -6,39 +6,40 @@ namespace Support\Entities\Console\Concerns;
 
 use Illuminate\Support\Stringable;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @mixin \Illuminate\Console\GeneratorCommand
- * @mixin \Support\Entities\Console\Contracts\GeneratesForEntity
  */
 trait RetrievesEntityFromArgument
 {
-    public Stringable $entityInput {
-        get => str($this->argument('entity'));
+    protected function entityFromArgument(): null|Stringable
+    {
+        if (! $this->hasArgument('entity')) {
+            return null;
+        }
+
+        $provided = str($this->argument('entity')); // @phpstan-ignore argument.type, larastan.console.undefinedArgument
+
+        if ($provided->isEmpty()) {
+            return null;
+        }
+
+        return $provided;
     }
 
-    public function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output): void
+    /** @return array<int, InputArgument> */
+    protected function getEntityInputArguments(): array
     {
-        parent::afterPromptingForMissingArguments($input, $output);
+        return [
+            new InputArgument('entity', InputArgument::REQUIRED, 'The entity FQCN (e.g. App\\Entities\\Posts\\Post).'),
+        ];
     }
 
     /**
      * @return array<string, \Closure(): string>
      */
-    protected function promptForMissingArgumentsUsing(): array
+    protected function getEntityPromptForMissingArguments(): array
     {
-        return array_merge(parent::promptForMissingArgumentsUsing(), [
-            'entity' => fn () => $this->entityFromPrompt()->fqcn->toString(),
-        ]);
-    }
-
-    /** @return array<int, InputArgument> */
-    protected function getArguments(): array
-    {
-        return [
-            new InputArgument('entity', InputArgument::REQUIRED, 'The entity FQCN (e.g. App\\Entities\\Posts\\Post).'),
-        ];
+        return ['entity' => fn () => $this->entityFromPrompt()->toString()];
     }
 }

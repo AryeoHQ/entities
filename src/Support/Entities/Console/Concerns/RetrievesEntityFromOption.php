@@ -9,16 +9,26 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * @mixin \Illuminate\Console\GeneratorCommand
- * @mixin \Support\Entities\Console\Contracts\GeneratesForEntity
  */
 trait RetrievesEntityFromOption
 {
-    public Stringable $entityInput {
-        get => str($this->option('entity'));
+    protected function entityFromOption(): null|Stringable
+    {
+        if (! $this->hasOption('entity')) {
+            return null;
+        }
+
+        $provided = str($this->option('entity')); // @phpstan-ignore argument.type, larastan.console.undefinedOption
+
+        if ($provided->isEmpty()) {
+            return null;
+        }
+
+        return $provided;
     }
 
     /** @return array<int, InputOption> */
-    protected function getEntityOptions(): array
+    protected function getEntityInputOptions(): array
     {
         return [
             new InputOption('entity', null, InputOption::VALUE_REQUIRED, 'The entity FQCN (e.g. App\\Entities\\Posts\\Post).'),

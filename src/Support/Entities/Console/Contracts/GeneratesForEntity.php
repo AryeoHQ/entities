@@ -10,7 +10,9 @@ use Tooling\GeneratorCommands\Contracts\GeneratesFile;
 
 interface GeneratesForEntity extends GeneratesFile
 {
-    public Stringable $entityInput { get; }
-
     public Entity $entity { get; }
+
+    public function resolveEntity(): void;
+
+    public function entityFromPrompt(): Stringable;
 }

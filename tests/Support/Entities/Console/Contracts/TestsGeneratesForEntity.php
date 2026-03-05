@@ -12,6 +12,12 @@ interface TestsGeneratesForEntity
     /** @var class-string */
     public string $command { get; }
 
+    /** @var class-string */
+    public string $parentCommand { get; }
+
+    /** @var array<string, mixed> */
+    public array $parentInput { get; }
+
     /** @var array<string, mixed> */
     public array $baselineInput { get; }
 
