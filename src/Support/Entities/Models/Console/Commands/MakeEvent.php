@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace Support\Entities\Models\Console\Commands;
 
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Foundation\Console\EventMakeCommand;
 use Illuminate\Support\Stringable;
-use Support\Entities\Console\Concerns\RetrievesEntityFromOption;
 use Support\Entities\Console\Contracts\GeneratesForEntity;
-use Support\Entities\Models\Console\Concerns\ResolvesModel;
+use Support\Entities\Models\Console\Concerns\RetrievesModel;
 use Support\Entities\Models\References\Event;
+use Symfony\Component\Console\Input\InputOption;
 use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
 use Tooling\GeneratorCommands\Concerns\SearchesClasses;
-use Tooling\GeneratorCommands\Concerns\SearchesNamespaces;
 
 class MakeEvent extends EventMakeCommand implements GeneratesForEntity
 {
     use GeneratorCommandCompatibility;
-    use ResolvesModel;
-    use RetrievesEntityFromOption;
+    use RetrievesModel;
     use SearchesClasses;
-    use SearchesNamespaces;
 
     public string $stub = __DIR__.'/stubs/event/event.stub';
 
@@ -36,7 +34,8 @@ class MakeEvent extends EventMakeCommand implements GeneratesForEntity
     {
         $this->resolveEntity();
 
-        parent::handle();
+        // Does not call parent::handle() to skip base command's operations
+        GeneratorCommand::handle();
 
         return self::SUCCESS; // @phpstan-ignore return.type
     }
@@ -51,12 +50,15 @@ class MakeEvent extends EventMakeCommand implements GeneratesForEntity
             $this->entity->fqcn->toString(),
             $this->entity->name->toString(),
             $this->reference->semanticName->toString(),
-        ], parent::buildClass($name));
+        ], GeneratorCommand::buildClass($name)); // Does not call parent::buildClass() to skip base command's operations
     }
 
-    /** @return array<int, \Symfony\Component\Console\Input\InputOption> */
+    /** @return array<int, InputOption> */
     protected function getOptions(): array
     {
-        return array_merge(parent::getOptions(), $this->getEntityOptions());
+        return [
+            ...$this->getEntityInputOptions(),
+            new InputOption('force', 'f', InputOption::VALUE_NONE, 'Create the class even if the event already exists'),
+        ];
     }
 }

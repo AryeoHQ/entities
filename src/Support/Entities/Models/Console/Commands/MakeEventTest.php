@@ -7,7 +7,7 @@ namespace Support\Entities\Models\Console\Commands;
 use Orchestra\Testbench\Concerns\InteractsWithPublishedFiles;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Console\Concerns\ResolvesEntityTestCases;
+use Support\Entities\Console\Concerns\RetrievesEntityTestCases;
 use Support\Entities\Events\Attributes\BroadcastAs;
 use Support\Entities\Events\Contracts\ForEntity;
 use Support\Entities\Events\Provides\EntityDriven;
@@ -23,7 +23,7 @@ class MakeEventTest extends TestCase implements TestsGeneratesForEntity
     use GeneratesFileTestCases;
     use InteractsWithPublishedFiles; // @phpstan-ignore-line
     use ProvidesModel;
-    use ResolvesEntityTestCases;
+    use RetrievesEntityTestCases;
 
     /** @var array<array-key, string> */
     protected array $files {

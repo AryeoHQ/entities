@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Orchestra\Testbench\Concerns\InteractsWithPublishedFiles;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Console\Concerns\ResolvesEntityTestCases;
+use Support\Entities\Console\Concerns\RetrievesEntityTestCases;
 use Tests\Support\Entities\Concerns\ProvidesEntity;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\TestCase;
@@ -22,7 +22,7 @@ class MakeProviderTest extends TestCase implements TestsGeneratesForEntity
     use GeneratesFileTestCases;
     use InteractsWithPublishedFiles; // @phpstan-ignore-line
     use ProvidesEntity;
-    use ResolvesEntityTestCases;
+    use RetrievesEntityTestCases;
 
     /** @var array<array-key, string> */
     protected array $files {

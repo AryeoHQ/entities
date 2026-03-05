@@ -4,26 +4,24 @@ declare(strict_types=1);
 
 namespace Support\Entities\Models\Console\Commands;
 
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
 use Illuminate\Support\Stringable;
-use Support\Entities\Console\Concerns\RetrievesEntityFromArgument;
 use Support\Entities\Console\Contracts\GeneratesForEntity;
-use Support\Entities\Models\Console\Concerns\ResolvesModel;
+use Support\Entities\Models\Console\Concerns\RetrievesModel;
 use Support\Entities\Models\References\Factory;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Tooling\GeneratorCommands\Concerns\CreatesColocatedTests;
 use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
 use Tooling\GeneratorCommands\Concerns\SearchesClasses;
-use Tooling\GeneratorCommands\Concerns\SearchesNamespaces;
 
 class MakeFactory extends FactoryMakeCommand implements GeneratesForEntity
 {
     use CreatesColocatedTests;
     use GeneratorCommandCompatibility;
-    use ResolvesModel;
-    use RetrievesEntityFromArgument;
+    use RetrievesModel;
     use SearchesClasses;
-    use SearchesNamespaces;
 
     public string $stub = __DIR__.'/stubs/factory/factory.stub';
 
@@ -39,7 +37,8 @@ class MakeFactory extends FactoryMakeCommand implements GeneratesForEntity
     {
         $this->resolveEntity();
 
-        parent::handle();
+        // Does not call parent::handle() to skip base command's operations
+        GeneratorCommand::handle();
 
         return self::SUCCESS; // @phpstan-ignore return.type
     }
@@ -52,14 +51,27 @@ class MakeFactory extends FactoryMakeCommand implements GeneratesForEntity
         ], [
             $this->entity->fqcn->toString(),
             $this->entity->name->toString(),
-        ], parent::buildClass($name));
+        ], GeneratorCommand::buildClass($name)); // Does not call parent::buildClass() to skip base command's operations
+    }
+
+    /** @return array<int, InputArgument> */
+    protected function getArguments(): array
+    {
+        return [
+            ...$this->getEntityInputArguments(),
+        ];
+    }
+
+    protected function promptForMissingArgumentsUsing(): array
+    {
+        return $this->getEntityPromptForMissingArguments();
     }
 
     /** @return array<int, InputOption> */
     protected function getOptions(): array
     {
-        return array_merge(parent::getOptions(), [
+        return [
             new InputOption('force', 'f', InputOption::VALUE_NONE, 'Create the class even if it already exists.'),
-        ]);
+        ];
     }
 }

@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 /**
  * @mixin \Tests\TestCase
  */
-trait ResolvesEntityTestCases
+trait RetrievesEntityTestCases
 {
     #[Test]
     public function it_resolves_the_entity_from_a_fqcn(): void
@@ -22,6 +22,8 @@ trait ResolvesEntityTestCases
     #[Test]
     public function it_resolves_the_entity_from_a_short_name(): void
     {
+        $this->artisan($this->parentCommand, $this->parentInput)->assertSuccessful();
+
         $this->artisan($this->command, $this->shortNameInput)->assertSuccessful();
 
         $this->assertFileExists($this->expectedFilePath);

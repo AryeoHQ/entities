@@ -18,7 +18,7 @@ use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
 use Tooling\GeneratorCommands\References\Contracts\Reference;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
-use Tooling\GeneratorCommands\Testing\Concerns\RetrievesNamespaceFromInputTestCases;
+use Tooling\GeneratorCommands\Testing\Concerns\RetrievesNamespaceTestCases;
 
 #[CoversClass(MakeModel::class)]
 class MakeModelTest extends TestCase implements TestsGeneratesEntity
@@ -26,7 +26,7 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
     use GeneratesFileTestCases;
     use InteractsWithPublishedFiles; // @phpstan-ignore-line
     use ProvidesModel;
-    use RetrievesNamespaceFromInputTestCases;
+    use RetrievesNamespaceTestCases;
 
     /** @var array<array-key, string> */
     protected array $files {

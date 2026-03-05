@@ -9,25 +9,22 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Console\ProviderMakeCommand;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Stringable;
-use Support\Entities\Console\Concerns\ResolvesEntity;
-use Support\Entities\Console\Concerns\RetrievesEntityFromArgument;
+use Support\Entities\Console\Concerns\RetrievesEntity;
 use Support\Entities\Console\Contracts\GeneratesForEntity;
 use Support\Entities\References\Provider;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
 use Tooling\GeneratorCommands\Concerns\SearchesClasses;
-use Tooling\GeneratorCommands\Concerns\SearchesNamespaces;
 
 class MakeProvider extends ProviderMakeCommand implements GeneratesForEntity
 {
     use GeneratorCommandCompatibility;
 
-    /** @use ResolvesEntity<\Support\Entities\References\Entity> */
-    use ResolvesEntity;
+    /** @use RetrievesEntity<\Support\Entities\References\Entity> */
+    use RetrievesEntity;
 
-    use RetrievesEntityFromArgument;
     use SearchesClasses;
-    use SearchesNamespaces;
 
     public string $stub = __DIR__.'/stubs/provider.stub';
 
@@ -51,7 +48,8 @@ class MakeProvider extends ProviderMakeCommand implements GeneratesForEntity
 
     protected function buildClass($name)
     {
-        $stub = parent::buildClass($name);
+        // Does not call parent::buildClass() to skip base command's operations
+        $stub = GeneratorCommand::buildClass($name);
 
         $imports = [];
         $bootLines = [];
@@ -81,12 +79,26 @@ class MakeProvider extends ProviderMakeCommand implements GeneratesForEntity
         return $stub;
     }
 
+    /** @return array<int, InputArgument> */
+    protected function getArguments(): array
+    {
+        return [
+            ...$this->getEntityInputArguments(),
+        ];
+    }
+
+    protected function promptForMissingArgumentsUsing(): array
+    {
+        return $this->getEntityPromptForMissingArguments();
+    }
+
     /** @return array<int, InputOption> */
     protected function getOptions(): array
     {
-        return array_merge(parent::getOptions(), [
+        return [
             new InputOption('model', null, InputOption::VALUE_NONE, 'Include morph map registration (for Eloquent models)'),
             new InputOption('policy', null, InputOption::VALUE_NEGATABLE, 'Include Gate policy registration', true),
-        ]);
+            new InputOption('force', 'f', InputOption::VALUE_NONE, 'Create the class even if the provider already exists'),
+        ];
     }
 }

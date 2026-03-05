@@ -24,17 +24,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tooling\GeneratorCommands\Concerns\CreatesColocatedTests;
 use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
-use Tooling\GeneratorCommands\Concerns\RetrievesNamespaceFromInput;
-use Tooling\GeneratorCommands\Concerns\SearchesNamespaces;
-
-use function collect;
+use Tooling\GeneratorCommands\Concerns\RetrievesNamespace;
 
 class MakeModel extends ModelMakeCommand implements GeneratesEntity
 {
     use CreatesColocatedTests;
     use GeneratorCommandCompatibility;
-    use RetrievesNamespaceFromInput;
-    use SearchesNamespaces;
+    use RetrievesNamespace;
 
     protected $description = 'Create a new Model entity.';
 
@@ -177,7 +173,7 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
 
     private function prepareEntityReference(): void
     {
-        $this->promptForNamespace();
+        $this->resolveNamespace();
 
         $name = str($this->getNameInput())->singular();
 
