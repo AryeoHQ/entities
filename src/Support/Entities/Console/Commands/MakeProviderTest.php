@@ -6,7 +6,6 @@ namespace Support\Entities\Console\Commands;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Gate;
-use Orchestra\Testbench\Concerns\InteractsWithPublishedFiles;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\Console\Concerns\RetrievesEntityTestCases;
@@ -14,22 +13,16 @@ use Tests\Support\Entities\Concerns\ProvidesEntity;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\TestCase;
 use Tooling\GeneratorCommands\References\Contracts\Reference;
+use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 
 #[CoversClass(MakeProvider::class)]
 class MakeProviderTest extends TestCase implements TestsGeneratesForEntity
 {
+    use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
-    use InteractsWithPublishedFiles; // @phpstan-ignore-line
     use ProvidesEntity;
     use RetrievesEntityTestCases;
-
-    /** @var array<array-key, string> */
-    protected array $files {
-        get => [
-            $this->entity->provider->directory->append('/', $this->entity->provider->name->toString(), '.php')->toString(),
-        ];
-    }
 
     public Reference $reference {
         get => $this->entity->provider;

@@ -6,7 +6,6 @@ namespace Support\Entities\Console\Commands;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Gate;
-use Orchestra\Testbench\Concerns\InteractsWithPublishedFiles;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\Contracts\Entity as EntityContract;
@@ -14,22 +13,23 @@ use Tests\Support\Entities\Concerns\ProvidesEntity;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesEntity;
 use Tests\TestCase;
 use Tooling\GeneratorCommands\References\Contracts\Reference;
+use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 use Tooling\GeneratorCommands\Testing\Concerns\RetrievesNamespaceTestCases;
 
 #[CoversClass(MakeEntity::class)]
 class MakeEntityTest extends TestCase implements TestsGeneratesEntity
 {
+    use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
-    use InteractsWithPublishedFiles; // @phpstan-ignore-line
     use ProvidesEntity;
     use RetrievesNamespaceTestCases;
 
     /** @var array<array-key, string> */
     protected array $files {
         get => [
-            $this->entity->directory->append('/*')->toString(),
-            $this->entity->policy->directory->append('/*')->toString(),
+            $this->entity->directoryPath->append('/*')->toString(),
+            $this->entity->policy->directoryPath->append('/*')->toString(),
         ];
     }
 

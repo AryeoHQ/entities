@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Orchestra\Testbench\Concerns\InteractsWithPublishedFiles;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\Contracts\Entity as EntityContract;
@@ -17,26 +16,27 @@ use Tests\Support\Entities\Console\Contracts\TestsGeneratesEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
 use Tooling\GeneratorCommands\References\Contracts\Reference;
+use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 use Tooling\GeneratorCommands\Testing\Concerns\RetrievesNamespaceTestCases;
 
 #[CoversClass(MakeModel::class)]
 class MakeModelTest extends TestCase implements TestsGeneratesEntity
 {
+    use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
-    use InteractsWithPublishedFiles; // @phpstan-ignore-line
     use ProvidesModel;
     use RetrievesNamespaceTestCases;
 
     /** @var array<array-key, string> */
     protected array $files {
         get => [
-            $this->entity->directory->append('/*')->toString(),
-            $this->entity->builder->directory->append('/*')->toString(),
-            $this->entity->collection->directory->append('/*')->toString(),
-            $this->entity->event('creating')->directory->append('/*')->toString(),
-            $this->entity->factory->directory->append('/*')->toString(),
-            $this->entity->policy->directory->append('/*')->toString(),
+            $this->entity->directoryPath->append('/*')->toString(),
+            $this->entity->builder->directoryPath->append('/*')->toString(),
+            $this->entity->collection->directoryPath->append('/*')->toString(),
+            $this->entity->event('creating')->directoryPath->append('/*')->toString(),
+            $this->entity->factory->directoryPath->append('/*')->toString(),
+            $this->entity->policy->directoryPath->append('/*')->toString(),
         ];
     }
 

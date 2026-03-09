@@ -18,7 +18,7 @@
         "nikic/php-parser": "^5.7",
         "phpstan/phpstan": "^2.1",
         "symfony/console": "^7.4",
-        "aryeo/tooling-laravel": "0.0.25"
+        "aryeo/tooling-laravel": "0.0.27"
     },
     "require-dev": {
         "orchestra/testbench": "^10.6",
