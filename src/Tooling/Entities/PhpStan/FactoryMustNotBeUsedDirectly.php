@@ -41,6 +41,10 @@ final class FactoryMustNotBeUsedDirectly extends Rule
             return false;
         }
 
+        if ($class === Factory::class) {
+            return true;
+        }
+
         $classReflection = (new ObjectType($class))->getClassReflection();
 
         if (! $classReflection instanceof ClassReflection) {

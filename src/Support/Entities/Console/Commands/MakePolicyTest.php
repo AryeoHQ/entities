@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Support\Entities\Console\Commands;
 
-use Orchestra\Testbench\Concerns\InteractsWithPublishedFiles;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\Console\Concerns\RetrievesEntityTestCases;
@@ -12,22 +11,16 @@ use Tests\Support\Entities\Concerns\ProvidesEntity;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\TestCase;
 use Tooling\GeneratorCommands\References\Contracts\Reference;
+use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 
 #[CoversClass(MakePolicy::class)]
 class MakePolicyTest extends TestCase implements TestsGeneratesForEntity
 {
+    use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
-    use InteractsWithPublishedFiles; // @phpstan-ignore-line
     use ProvidesEntity;
     use RetrievesEntityTestCases;
-
-    /** @var array<array-key, string> */
-    protected array $files {
-        get => [
-            $this->entity->policy->directory->append('/*')->toString(),
-        ];
-    }
 
     public Reference $reference {
         get => $this->entity->policy;

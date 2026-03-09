@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Support\Entities\Models\Console\Commands;
 
 use Illuminate\Database\Eloquent\Collection;
-use Orchestra\Testbench\Concerns\InteractsWithPublishedFiles;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\Console\Concerns\RetrievesEntityTestCases;
@@ -13,22 +12,16 @@ use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
 use Tooling\GeneratorCommands\References\Contracts\Reference;
+use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 
 #[CoversClass(MakeCollection::class)]
 class MakeCollectionTest extends TestCase implements TestsGeneratesForEntity
 {
+    use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
-    use InteractsWithPublishedFiles; // @phpstan-ignore-line
     use ProvidesModel;
     use RetrievesEntityTestCases;
-
-    /** @var array<array-key, string> */
-    protected array $files {
-        get => [
-            $this->entity->collection->directory->append('/*')->toString(),
-        ];
-    }
 
     public Reference $reference {
         get => $this->entity->collection;
