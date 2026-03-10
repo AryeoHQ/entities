@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\Contracts\Entity as EntityContract;
@@ -103,6 +106,9 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
 
         $this->assertStringContainsString('use '.EntityContract::class.';', $model);
         $this->assertStringContainsString('implements '.class_basename(EntityContract::class), $model);
+
+        $this->assertStringContainsString('use '.EloquentModel::class.';', $model);
+        $this->assertStringContainsString('extends '.class_basename(EloquentModel::class).' implements', $model);
     }
 
     #[Test]
@@ -213,5 +219,46 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
 
         $this->assertFileExists($this->entity->filePath->toString());
         $this->assertFileDoesNotExist($this->entity->test->filePath->toString());
+    }
+
+    #[Test]
+    public function pivot_model_extends_pivot(): void
+    {
+        $this->artisan($this->command, [...$this->baselineInput, '--pivot' => true])
+            ->assertSuccessful();
+
+        $model = file_get_contents($this->entity->filePath->toString());
+
+        $this->assertStringContainsString('use '.Pivot::class.';', $model);
+        $this->assertStringContainsString('extends '.class_basename(Pivot::class).' implements', $model);
+        $this->assertStringNotContainsString('use '.EloquentModel::class.';', $model);
+        $this->assertStringNotContainsString('extends Model implements', $model);
+        $this->assertStringContainsString('use '.HasUuids::class.';', $model);
+        $this->assertStringContainsString('use '.class_basename(HasUuids::class).';', $model);
+        $this->assertStringContainsString('implements '.class_basename(EntityContract::class), $model);
+    }
+
+    #[Test]
+    public function morph_pivot_model_extends_morph_pivot(): void
+    {
+        $this->artisan($this->command, [...$this->baselineInput, '--morph-pivot' => true])
+            ->assertSuccessful();
+
+        $model = file_get_contents($this->entity->filePath->toString());
+
+        $this->assertStringContainsString('use '.MorphPivot::class.';', $model);
+        $this->assertStringContainsString('extends '.class_basename(MorphPivot::class).' implements', $model);
+        $this->assertStringNotContainsString('use '.EloquentModel::class.';', $model);
+        $this->assertStringNotContainsString('extends Model implements', $model);
+        $this->assertStringContainsString('use '.HasUuids::class.';', $model);
+        $this->assertStringContainsString('use '.class_basename(HasUuids::class).';', $model);
+        $this->assertStringContainsString('implements '.class_basename(EntityContract::class), $model);
+    }
+
+    #[Test]
+    public function pivot_and_morph_pivot_are_mutually_exclusive(): void
+    {
+        $this->artisan($this->command, [...$this->baselineInput, '--pivot' => true, '--morph-pivot' => true])
+            ->assertFailed();
     }
 }
