@@ -7,7 +7,7 @@ namespace {{ domainModelDirectoryNamespace }};
 {{ imports }}
 
 {{ attributes }}
-class {{ domainModelName }} extends Model implements Entity
+class {{ domainModelName }} extends {{ baseClass }} implements Entity
 {
 {{ body }}
 }

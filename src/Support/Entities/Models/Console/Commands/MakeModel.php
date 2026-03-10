@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Foundation\Console\ModelMakeCommand;
 use Illuminate\Support\Stringable;
 use Support\Entities\Console\Commands\MakePolicy;
@@ -50,6 +52,12 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
 
     public function handle()
     {
+        if ($this->option('pivot') && $this->option('morph-pivot')) {
+            $this->components->error('The --pivot and --morph-pivot options are mutually exclusive.');
+
+            return self::FAILURE; // @phpstan-ignore return.void
+        }
+
         $this->prepareEntityReference();
 
         // Does not call parent::handle() to skip base command's operations
@@ -78,6 +86,9 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
             $this->reference->name->toString(),
         ], $stub);
 
+        $baseClassFqcn = $this->resolveBaseClass();
+        $stub = str_replace('{{ baseClass }}', class_basename($baseClassFqcn), $stub);
+
         $imports = $this->buildModelImports();
         $attributes = $this->buildModelAttributes();
         $body = $this->buildModelBody();
@@ -94,11 +105,20 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
         return $stub;
     }
 
+    private function resolveBaseClass(): string
+    {
+        return match (true) {
+            (bool) $this->option('morph-pivot') => MorphPivot::class,
+            (bool) $this->option('pivot') => Pivot::class,
+            default => EloquentModel::class,
+        };
+    }
+
     private function buildModelImports(): string
     {
         return collect([
             'use '.HasUuids::class.';',
-            'use '.EloquentModel::class.';',
+            'use '.$this->resolveBaseClass().';',
             'use '.EntityContract::class.';',
         ])->when(
             $this->option('builder'),
@@ -290,6 +310,8 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
             new InputOption('collection', 'c', InputOption::VALUE_NEGATABLE, 'Create a new collection for the entity', true),
             new InputOption('events', 'e', InputOption::VALUE_NEGATABLE, 'Create semantic events for the entity', true),
             new InputOption('provider', null, InputOption::VALUE_NEGATABLE, 'Create a new service provider for the entity', true),
+            new InputOption('pivot', 'p', InputOption::VALUE_NONE, 'Indicates the generated model should be a custom intermediate table model'),
+            new InputOption('morph-pivot', null, InputOption::VALUE_NONE, 'Indicates the generated model should be a custom polymorphic intermediate table model'),
             new InputOption('force', null, InputOption::VALUE_NONE, 'Create the class even if it already exists'),
         ];
     }
