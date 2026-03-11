@@ -9,3 +9,4 @@ devbox.d/
 tests/coverage
 .DS_Store
 sketchpad/
+workbench/
