@@ -40,7 +40,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\": "workbench/app/",
+            "Workbench\\App\\": "workbench/app/",
             "Tests\\": "tests/"
         }
     },
