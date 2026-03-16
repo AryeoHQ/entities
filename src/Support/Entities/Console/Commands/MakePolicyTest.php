@@ -6,11 +6,10 @@ namespace Support\Entities\Console\Commands;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Console\Concerns\RetrievesEntityTestCases;
+use Support\Entities\References\Policy;
 use Tests\Support\Entities\Concerns\ProvidesEntity;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\TestCase;
-use Tooling\GeneratorCommands\References\Contracts\Reference;
 use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 
@@ -20,20 +19,14 @@ class MakePolicyTest extends TestCase implements TestsGeneratesForEntity
     use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
     use ProvidesEntity;
-    use RetrievesEntityTestCases;
 
-    public Reference $reference {
+    public Policy $reference {
         get => $this->entity->policy;
     }
 
     /** @var array<string, mixed> */
     public array $baselineInput {
         get => ['entity' => $this->entity->fqcn->toString()];
-    }
-
-    /** @var array<string, mixed> */
-    public array $shortNameInput {
-        get => ['entity' => $this->entity->name->toString()];
     }
 
     #[Test]
@@ -45,7 +38,7 @@ class MakePolicyTest extends TestCase implements TestsGeneratesForEntity
 
         $policy = file_get_contents($this->reference->filePath->toString());
 
-        $this->assertStringContainsString("use {$this->entity->fqcn};", $policy);
+        $this->assertStringContainsString('use '.$this->entity->fqcn->ltrim('\\').';', $policy);
 
         $this->assertFileExists($this->reference->test->filePath->toString());
     }

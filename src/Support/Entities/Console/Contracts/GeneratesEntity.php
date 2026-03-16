@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Support\Entities\Console\Contracts;
 
-use Support\Entities\References\Contracts\Entity;
+use Support\Entities\References\Entity;
 use Tooling\GeneratorCommands\Contracts\GeneratesFile;
 
 interface GeneratesEntity extends GeneratesFile

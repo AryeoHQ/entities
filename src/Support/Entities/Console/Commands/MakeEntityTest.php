@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Gate;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\Contracts\Entity as EntityContract;
+use Support\Entities\References\Entity;
 use Tests\Support\Entities\Concerns\ProvidesEntity;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesEntity;
 use Tests\TestCase;
-use Tooling\GeneratorCommands\References\Contracts\Reference;
 use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 use Tooling\GeneratorCommands\Testing\Concerns\RetrievesNamespaceTestCases;
@@ -28,18 +28,18 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
     /** @var array<array-key, string> */
     protected array $files {
         get => [
-            $this->entity->directoryPath->append('/*')->toString(),
-            $this->entity->policy->directoryPath->append('/*')->toString(),
+            $this->entity->directory->append('/*')->toString(),
+            $this->entity->policy->directory->append('/*')->toString(),
         ];
     }
 
-    public Reference $reference {
+    public Entity $reference {
         get => $this->entity;
     }
 
     /** @var array<string, mixed> */
     public array $baselineInput {
-        get => ['name' => $this->entity->name->toString(), '--namespace' => 'App\\', '--no-model' => true];
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App\\', '--no-model' => true];
     }
 
     /** @var array<string, mixed> */
@@ -49,7 +49,7 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
 
     /** @var array<string, mixed> */
     public array $withoutNamespaceBackslashInput {
-        get => ['name' => $this->entity->name->toString(), '--namespace' => 'App', '--no-model' => true];
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App', '--no-model' => true];
     }
 
     #[Test]
@@ -100,7 +100,7 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
     #[Test]
     public function model_flag_warns_to_use_make_model(): void
     {
-        $this->artisan($this->command, ['name' => $this->entity->name, '--namespace' => 'App\\'])
+        $this->artisan($this->command, ['name' => $this->entity->name, '--namespace' => 'Workbench\\App\\'])
             ->expectsQuestion('Did you intend to create a model?', true)
             ->expectsOutputToContain('make:model')
             ->assertSuccessful();
@@ -111,7 +111,7 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
     #[Test]
     public function model_flag_continues_as_entity_when_declined(): void
     {
-        $this->artisan($this->command, ['name' => $this->entity->name, '--namespace' => 'App\\'])
+        $this->artisan($this->command, ['name' => $this->entity->name, '--namespace' => 'Workbench\\App\\'])
             ->expectsQuestion('Did you intend to create a model?', false)
             ->assertSuccessful();
 

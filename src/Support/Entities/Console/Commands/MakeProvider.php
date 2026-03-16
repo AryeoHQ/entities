@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Stringable;
 use Support\Entities\Console\Concerns\RetrievesEntity;
 use Support\Entities\Console\Contracts\GeneratesForEntity;
+use Support\Entities\References\Entity;
 use Support\Entities\References\Provider;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,7 +22,7 @@ class MakeProvider extends ProviderMakeCommand implements GeneratesForEntity
 {
     use GeneratorCommandCompatibility;
 
-    /** @use RetrievesEntity<\Support\Entities\References\Entity> */
+    /** @use RetrievesEntity<Entity> */
     use RetrievesEntity;
 
     use SearchesClasses;
@@ -56,19 +57,19 @@ class MakeProvider extends ProviderMakeCommand implements GeneratesForEntity
 
         if ($this->option('model')) {
             $imports[] = 'use '.Relation::class.';';
-            $imports[] = "use {$this->entity->fqcn};";
+            $imports[] = 'use '.$this->entity->fqcn->ltrim('\\').';';
 
             $bootLines[] = class_basename(Relation::class)."::enforceMorphMap([\n"
                 ."            '{$this->entity->variableName}' => {$this->entity->name}::class,\n"
                 .'        ]);';
         } elseif ($this->option('policy')) {
             $imports[] = 'use '.Gate::class.';';
-            $imports[] = "use {$this->entity->fqcn};";
-            $imports[] = "use {$this->entity->policy->fqcn};";
+            $imports[] = 'use '.$this->entity->fqcn->ltrim('\\').';';
+            $imports[] = 'use '.$this->entity->policy->fqcn->ltrim('\\').';';
 
             $bootLines[] = "Gate::policy({$this->entity->name}::class, {$this->entity->policy->name}::class);";
         } else {
-            $imports[] = "use {$this->entity->fqcn};";
+            $imports[] = 'use '.$this->entity->fqcn->ltrim('\\').';';
         }
 
         $imports = collect($imports)->unique()->sort()->values()->implode("\n");

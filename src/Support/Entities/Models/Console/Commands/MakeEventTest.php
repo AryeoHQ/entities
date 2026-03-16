@@ -6,14 +6,13 @@ namespace Support\Entities\Models\Console\Commands;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Console\Concerns\RetrievesEntityTestCases;
 use Support\Entities\Events\Attributes\BroadcastAs;
 use Support\Entities\Events\Contracts\ForEntity;
 use Support\Entities\Events\Provides\EntityDriven;
+use Support\Entities\Models\References\Event;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
-use Tooling\GeneratorCommands\References\Contracts\Reference;
 use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 
@@ -23,27 +22,21 @@ class MakeEventTest extends TestCase implements TestsGeneratesForEntity
     use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
     use ProvidesModel;
-    use RetrievesEntityTestCases;
 
     /** @var array<array-key, string> */
     protected array $files {
         get => [
-            $this->entity->event('Created')->directoryPath->append('/*')->toString(),
+            $this->entity->event('Created')->directory->append('/*')->toString(),
         ];
     }
 
-    public Reference $reference {
+    public Event $reference {
         get => $this->entity->event('Created');
     }
 
     /** @var array<string, mixed> */
     public array $baselineInput {
         get => ['name' => 'Created', '--entity' => $this->entity->fqcn->toString()];
-    }
-
-    /** @var array<string, mixed> */
-    public array $shortNameInput {
-        get => ['name' => 'Created', '--entity' => $this->entity->name->toString()];
     }
 
     #[Test]

@@ -6,11 +6,10 @@ namespace Support\Entities\Models\Console\Commands;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Console\Concerns\RetrievesEntityTestCases;
+use Support\Entities\Models\References\Factory;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
-use Tooling\GeneratorCommands\References\Contracts\Reference;
 use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 
@@ -20,20 +19,14 @@ class MakeFactoryTest extends TestCase implements TestsGeneratesForEntity
     use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
     use ProvidesModel;
-    use RetrievesEntityTestCases;
 
-    public Reference $reference {
+    public Factory $reference {
         get => $this->entity->factory;
     }
 
     /** @var array<string, mixed> */
     public array $baselineInput {
         get => ['entity' => $this->entity->fqcn->toString()];
-    }
-
-    /** @var array<string, mixed> */
-    public array $shortNameInput {
-        get => ['entity' => $this->entity->name->toString()];
     }
 
     #[Test]

@@ -9,9 +9,12 @@ use Illuminate\Foundation\Console\PolicyMakeCommand;
 use Illuminate\Support\Stringable;
 use Support\Entities\Console\Concerns\RetrievesEntity;
 use Support\Entities\Console\Contracts\GeneratesForEntity;
+use Support\Entities\References\Entity;
 use Support\Entities\References\Policy;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Tooling\GeneratorCommands\Concerns\CreatesColocatedTests;
 use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
 use Tooling\GeneratorCommands\Concerns\SearchesClasses;
@@ -21,7 +24,7 @@ class MakePolicy extends PolicyMakeCommand implements GeneratesForEntity
     use CreatesColocatedTests;
     use GeneratorCommandCompatibility;
 
-    /** @use RetrievesEntity<\Support\Entities\References\Entity> */
+    /** @use RetrievesEntity<Entity> */
     use RetrievesEntity;
 
     use SearchesClasses;
@@ -46,6 +49,12 @@ class MakePolicy extends PolicyMakeCommand implements GeneratesForEntity
         return self::SUCCESS; // @phpstan-ignore return.type
     }
 
+    /** Override parent — entity resolution replaces the model suggestion prompt. */
+    protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output): void
+    {
+        //
+    }
+
     protected function buildClass($name)
     {
         return str_replace([
@@ -53,7 +62,7 @@ class MakePolicy extends PolicyMakeCommand implements GeneratesForEntity
             '{{ domainModelName }}',
             '{{ domainModelVariableName }}',
         ], [
-            $this->entity->fqcn->toString(),
+            $this->entity->fqcn->ltrim('\\')->toString(),
             $this->entity->name->toString(),
             $this->entity->variableName->toString(),
         ], GeneratorCommand::buildClass($name)); // Does not call parent::buildClass() to skip base command's operations

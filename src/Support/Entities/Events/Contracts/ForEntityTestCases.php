@@ -6,9 +6,10 @@ namespace Support\Entities\Events\Contracts;
 
 use Illuminate\Broadcasting\Channel;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 /**
- * @mixin \Tests\TestCase
+ * @mixin TestCase
  */
 trait ForEntityTestCases
 {

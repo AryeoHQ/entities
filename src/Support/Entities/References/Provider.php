@@ -4,23 +4,13 @@ declare(strict_types=1);
 
 namespace Support\Entities\References;
 
-use Illuminate\Support\Stringable;
-use Support\Entities\References\Concerns\RequiresEntity;
-use Support\Entities\References\Contracts\Entity;
-use Tooling\GeneratorCommands\References\Contracts\Reference;
+use Tooling\GeneratorCommands\References\GenericClass;
 
-final class Provider implements Reference
+final class Provider extends GenericClass
 {
-    use RequiresEntity;
-
-    public function __construct(Entity $entity)
-    {
-        $this->entity = $entity;
+    public Entity $entity {
+        get => Entity::fromFqcn(
+            $this->baseNamespace->append('\\', (string) str((string) $this->baseNamespace->afterLast('\\'))->singular()),
+        );
     }
-
-    public Stringable $name {
-        get => str('Provider');
-    }
-
-    public null|Stringable $subdirectory = null;
 }

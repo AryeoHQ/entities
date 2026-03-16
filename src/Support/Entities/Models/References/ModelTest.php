@@ -7,7 +7,7 @@ namespace Support\Entities\Models\References;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\References\Concerns\EntityTestCases;
-use Support\Entities\References\Contracts\Entity;
+use Support\Entities\References\Entity;
 use Tests\Support\Entities\References\Contracts\TestsEntity;
 use Tests\TestCase;
 
@@ -17,11 +17,11 @@ class ModelTest extends TestCase implements TestsEntity
     use EntityTestCases;
 
     public Model $subject {
-        get => new Model(name: 'Post', baseNamespace: 'App\\');
+        get => new Model(name: 'Post', baseNamespace: 'Workbench\\App\\');
     }
 
     #[Test]
-    public function it_implements_entity_contract(): void
+    public function it_extends_entity(): void
     {
         $this->assertInstanceOf(Entity::class, $this->subject);
     }
@@ -29,38 +29,27 @@ class ModelTest extends TestCase implements TestsEntity
     #[Test]
     public function it_provides_a_builder_reference(): void
     {
-        $subject = $this->subject;
-
-        $this->assertInstanceOf(Builder::class, $subject->builder);
-        $this->assertSame($subject, $subject->builder->entity);
+        $this->assertInstanceOf(Builder::class, $this->subject->builder);
     }
 
     #[Test]
     public function it_provides_a_collection_reference(): void
     {
-        $subject = $this->subject;
-
-        $this->assertInstanceOf(Collection::class, $subject->collection);
-        $this->assertSame($subject, $subject->collection->entity);
+        $this->assertInstanceOf(Collection::class, $this->subject->collection);
     }
 
     #[Test]
     public function it_provides_a_factory_reference(): void
     {
-        $subject = $this->subject;
-
-        $this->assertInstanceOf(Factory::class, $subject->factory);
-        $this->assertSame($subject, $subject->factory->entity);
+        $this->assertInstanceOf(Factory::class, $this->subject->factory);
     }
 
     #[Test]
     public function it_creates_an_event_reference(): void
     {
-        $subject = $this->subject;
-        $event = $subject->event('creating');
+        $event = $this->subject->event('creating');
 
         $this->assertInstanceOf(Event::class, $event);
-        $this->assertSame($subject, $event->entity);
-        $this->assertSame('creating', $event->event);
+        $this->assertSame('Creating', $event->name->toString());
     }
 }

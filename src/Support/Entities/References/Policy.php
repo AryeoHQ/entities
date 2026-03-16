@@ -5,24 +5,17 @@ declare(strict_types=1);
 namespace Support\Entities\References;
 
 use Illuminate\Support\Stringable;
-use Support\Entities\References\Concerns\RequiresEntity;
-use Support\Entities\References\Contracts\Entity;
-use Tooling\GeneratorCommands\References\Contracts\Reference;
+use Tooling\GeneratorCommands\References\GenericClass;
 
-final class Policy implements Reference
+final class Policy extends GenericClass
 {
-    use RequiresEntity;
-
-    public function __construct(Entity $entity)
-    {
-        $this->entity = $entity;
-    }
-
-    public Stringable $name {
+    public null|Stringable $subNamespace {
         get => str('Policy');
     }
 
-    public Stringable $subdirectory {
-        get => str('Policy');
+    public Entity $entity {
+        get => Entity::fromFqcn(
+            $this->baseNamespace->append('\\', (string) str((string) $this->baseNamespace->afterLast('\\'))->singular()),
+        );
     }
 }

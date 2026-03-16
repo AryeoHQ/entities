@@ -6,19 +6,13 @@ namespace Support\Entities\References;
 
 use Illuminate\Support\Stringable;
 use Support\Entities\References\Concerns\AsEntity;
-use Support\Entities\References\Contracts\Entity as EntityContract;
+use Tooling\GeneratorCommands\References\GenericClass;
 
-final class Entity implements EntityContract
+class Entity extends GenericClass
 {
     use AsEntity;
 
-    public Stringable $name;
-
-    public Stringable $baseNamespace;
-
-    public function __construct(Stringable|string $name, Stringable|string $baseNamespace)
-    {
-        $this->name = str($name);
-        $this->baseNamespace = str($baseNamespace);
+    public null|Stringable $subNamespace {
+        get => str("Entities\\{$this->plural}");
     }
 }

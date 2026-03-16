@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Gate;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Console\Concerns\RetrievesEntityTestCases;
+use Support\Entities\References\Provider;
 use Tests\Support\Entities\Concerns\ProvidesEntity;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\TestCase;
-use Tooling\GeneratorCommands\References\Contracts\Reference;
 use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 
@@ -22,20 +21,14 @@ class MakeProviderTest extends TestCase implements TestsGeneratesForEntity
     use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
     use ProvidesEntity;
-    use RetrievesEntityTestCases;
 
-    public Reference $reference {
+    public Provider $reference {
         get => $this->entity->provider;
     }
 
     /** @var array<string, mixed> */
     public array $baselineInput {
         get => ['entity' => $this->entity->fqcn->toString()];
-    }
-
-    /** @var array<string, mixed> */
-    public array $shortNameInput {
-        get => ['entity' => $this->entity->name->toString()];
     }
 
     #[Test]
@@ -47,7 +40,7 @@ class MakeProviderTest extends TestCase implements TestsGeneratesForEntity
 
         $serviceProvider = file_get_contents($this->reference->filePath->toString());
 
-        $this->assertStringContainsString("use {$this->entity->fqcn};", $serviceProvider);
+        $this->assertStringContainsString('use '.$this->entity->fqcn->ltrim('\\').';', $serviceProvider);
         $this->assertStringContainsString(class_basename(Relation::class).'::enforceMorphMap([', $serviceProvider);
         $this->assertStringContainsString("'".$this->entity->variableName."' => ".$this->entity->name.'::class,', $serviceProvider);
     }
@@ -64,8 +57,8 @@ class MakeProviderTest extends TestCase implements TestsGeneratesForEntity
             $serviceProvider
         );
         $this->assertStringContainsString('use '.Gate::class.';', $serviceProvider);
-        $this->assertStringContainsString("use {$this->entity->fqcn};", $serviceProvider);
-        $this->assertStringContainsString("use {$this->entity->policy->fqcn};", $serviceProvider);
+        $this->assertStringContainsString('use '.$this->entity->fqcn->ltrim('\\').';', $serviceProvider);
+        $this->assertStringContainsString('use '.$this->entity->policy->fqcn->ltrim('\\').';', $serviceProvider);
         $this->assertStringContainsString(
             class_basename(Gate::class).'::policy('.$this->entity->name.'::class, Policy::class);',
             $serviceProvider

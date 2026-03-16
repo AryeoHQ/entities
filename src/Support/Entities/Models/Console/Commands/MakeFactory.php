@@ -49,7 +49,7 @@ class MakeFactory extends FactoryMakeCommand implements GeneratesForEntity
             '{{ domainModelNamespace }}',
             '{{ domainModelName }}',
         ], [
-            $this->entity->fqcn->toString(),
+            $this->entity->fqcn->ltrim('\\')->toString(),
             $this->entity->name->toString(),
         ], GeneratorCommand::buildClass($name)); // Does not call parent::buildClass() to skip base command's operations
     }

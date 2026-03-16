@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Support\Entities\Console\Concerns;
 
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Stringable;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * @mixin \Illuminate\Console\GeneratorCommand
+ * @mixin GeneratorCommand
  */
 trait RetrievesEntityFromArgument
 {
