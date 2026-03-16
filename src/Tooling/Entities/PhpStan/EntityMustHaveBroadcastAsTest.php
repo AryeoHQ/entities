@@ -39,7 +39,7 @@ class EntityMustHaveBroadcastAsTest extends RuleTestCase
         $this->analyse([$this->getFixturePath('Entities/ForEntityWithoutBroadcastAs.php')], [
             [
                 'ForEntity must have a #[BroadcastAs] attribute.',
-                11,
+                12,
             ],
         ]);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tooling\Entities\PhpStan;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use PhpParser\Node;
@@ -77,7 +78,7 @@ final class ModelMustNotDefineScopeMethods extends Rule
     private function isBuilderType(Node $type): bool
     {
         if ($type instanceof Node\Name) {
-            return is_a($type->toString(), \Illuminate\Database\Eloquent\Builder::class, true);
+            return is_a($type->toString(), Builder::class, true);
         }
 
         if ($type instanceof Node\UnionType || $type instanceof Node\IntersectionType) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Fixtures\Tooling\Entities;
 
+use Illuminate\Broadcasting\Channel;
 use Support\Entities\Contracts\Entity;
 use Support\Entities\Events\Attributes\BroadcastAs;
 use Support\Entities\Events\Contracts\ForEntity;
@@ -21,7 +22,7 @@ final class ValidEntityEvent implements ForEntity
         $this->entity = $entity;
     }
 
-    /** @return array<int, \Illuminate\Broadcasting\Channel> */
+    /** @return array<int, Channel> */
     public function broadcastOn(): array
     {
         return [];

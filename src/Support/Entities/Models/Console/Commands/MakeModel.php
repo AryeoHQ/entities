@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Concerns\HasEvents;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
@@ -82,7 +83,7 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
             '{{ domainModelDirectoryNamespace }}',
             '{{ domainModelName }}',
         ], [
-            $this->reference->namespace->toString(),
+            $this->reference->namespace->after('\\')->toString(),
             $this->reference->name->toString(),
         ], $stub);
 
@@ -123,27 +124,27 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
         ])->when(
             $this->option('builder'),
             fn ($imports) => $imports
-                ->push('use '.$this->entity->builder->fqcn.';')
+                ->push('use '.$this->entity->builder->fqcn->ltrim('\\').';')
                 ->push('use '.UseEloquentBuilder::class.';')
         )->when(
             $this->option('collection'),
             fn ($imports) => $imports
-                ->push('use '.$this->entity->collection->fqcn.';')
+                ->push('use '.$this->entity->collection->fqcn->ltrim('\\').';')
                 ->push('use '.CollectedBy::class.';')
         )->when(
             $this->option('events'),
             fn ($imports) => $imports
-                ->push('use '.$this->entity->event('creating')->namespace.';')
+                ->push('use '.$this->entity->event('creating')->namespace->ltrim('\\').';')
         )->when(
             $this->option('factory'),
             fn ($imports) => $imports
-                ->push('use '.$this->entity->factory->fqcn.';')
+                ->push('use '.$this->entity->factory->fqcn->ltrim('\\').';')
                 ->push('use '.UseFactory::class.';')
                 ->push('use '.HasFactory::class.';')
         )->when(
             $this->option('policy'),
             fn ($imports) => $imports
-                ->push('use '.$this->entity->policy->fqcn.';')
+                ->push('use '.$this->entity->policy->fqcn->ltrim('\\').';')
                 ->push('use '.UsePolicy::class.';')
         )->sort()->values()->implode("\n");
     }
@@ -284,7 +285,7 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
     {
         return (new class // @phpstan-ignore class.missingExtends
         {
-            use \Illuminate\Database\Eloquent\Concerns\HasEvents;
+            use HasEvents;
         })->getObservableEvents();
     }
 
@@ -294,7 +295,7 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
             ->map(function (string $event) {
                 $ref = $this->entity->event($event);
 
-                return "        '{$event}' => {$ref->subdirectory}\\{$ref->name}::class,";
+                return "        '{$event}' => {$ref->subNamespace}\\{$ref->name}::class,";
             })
             ->implode("\n");
     }

@@ -6,40 +6,27 @@ namespace Support\Entities\Models\References;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\References\Concerns\RequiresEntityTestCases;
-use Support\Entities\References\Entity;
 use Tests\TestCase;
-use Tooling\GeneratorCommands\Testing\Concerns\ReferenceTestCases;
+use Tooling\GeneratorCommands\References\ReferenceTestCases;
 use Tooling\GeneratorCommands\Testing\Contracts\TestsReference;
 
 #[CoversClass(Event::class)]
 class EventTest extends TestCase implements TestsReference
 {
     use ReferenceTestCases;
-    use RequiresEntityTestCases;
 
     public Event $subject {
-        get => new Event(new Entity(name: 'Post', baseNamespace: 'App\\'), 'creating');
+        get => new Event(name: 'Creating', baseNamespace: '\\Workbench\\App\\Entities\\Posts');
     }
 
     public string $expectedName {
         get => 'Creating';
     }
 
-    public string $expectedSubdirectory {
-        get => 'Events';
-    }
-
     #[Test]
-    public function it_stores_the_event_name(): void
+    public function it_derives_the_key(): void
     {
-        $this->assertSame('creating', $this->subject->event);
-    }
-
-    #[Test]
-    public function it_capitalizes_the_name(): void
-    {
-        $this->assertSame('Creating', $this->subject->name->toString());
+        $this->assertSame('creating', $this->subject->key->toString());
     }
 
     #[Test]
@@ -51,8 +38,17 @@ class EventTest extends TestCase implements TestsReference
     #[Test]
     public function it_kebab_cases_multi_word_semantic_names(): void
     {
-        $event = new Event(new Entity(name: 'Post', baseNamespace: 'App\\'), 'forceDeleted');
+        $event = new Event(name: 'ForceDeleted', baseNamespace: '\\Workbench\\App\\Entities\\Posts');
 
         $this->assertSame('post.force-deleted', $event->semanticName->toString());
+    }
+
+    #[Test]
+    public function it_hydrates_the_model_from_namespace(): void
+    {
+        $model = $this->subject->model;
+
+        $this->assertInstanceOf(Model::class, $model);
+        $this->assertSame('Post', $model->name->toString());
     }
 }

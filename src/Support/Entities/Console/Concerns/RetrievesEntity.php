@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Support\Entities\Console\Concerns;
 
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use ReflectionClass;
@@ -12,12 +13,11 @@ use Support\Entities\References\Entity;
 use Tooling\Composer\Composer;
 
 use function Laravel\Prompts\search;
-use function Laravel\Prompts\select;
 
 /**
- * @template TEntity of Entities\References\Contracts\Entity
+ * @template TEntity of Entities\References\Entity
  *
- * @mixin \Illuminate\Console\GeneratorCommand
+ * @mixin GeneratorCommand
  */
 trait RetrievesEntity
 {
@@ -25,7 +25,7 @@ trait RetrievesEntity
     use RetrievesEntityFromOption;
 
     /** @var TEntity */
-    public protected(set) Entities\References\Contracts\Entity $entity;
+    public protected(set) Entity $entity;
 
     /**
      * @param  Collection<int, string>  $classes
@@ -49,18 +49,9 @@ trait RetrievesEntity
             return $name;
         }
 
-        $matches = $this->searchableClasses
-            ->filter(fn (string $class) => str(class_basename($class))->lower()->exactly($name->lower()->toString()));
+        $this->components->warn('Please provide a fully-qualified class name (e.g. App\\Models\\User).');
 
-        return match ($matches->count()) {
-            0 => $this->entityFromPrompt(),
-            1 => str($matches->first()),
-            default => str(select(
-                label: "Multiple entities found matching [{$name}]:",
-                options: $matches->values()->all(),
-                required: true,
-            )),
-        };
+        return $this->entityFromPrompt();
     }
 
     public function resolveEntity(): void

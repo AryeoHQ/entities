@@ -49,7 +49,7 @@ class MakeBuilder extends GeneratorCommand implements GeneratesForEntity
     {
         return str_replace(
             '{{ domainModelNamespace }}',
-            $this->entity->fqcn->toString(),
+            $this->entity->fqcn->after('\\')->toString(),
             parent::buildClass($name),
         );
     }

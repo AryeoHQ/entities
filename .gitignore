@@ -9,3 +9,7 @@ devbox.d/
 tests/coverage
 .DS_Store
 sketchpad/
+workbench/*
+!workbench/app
+workbench/app/*
+!workbench/app/.gitkeep

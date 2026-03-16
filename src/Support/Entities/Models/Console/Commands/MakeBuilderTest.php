@@ -8,11 +8,9 @@ use Illuminate\Database\Eloquent\Builder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Database\Eloquent\Contracts\Filterable;
-use Support\Entities\Console\Concerns\RetrievesEntityTestCases;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
-use Tooling\GeneratorCommands\References\Contracts\Reference;
 use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 
@@ -22,20 +20,14 @@ class MakeBuilderTest extends TestCase implements TestsGeneratesForEntity
     use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
     use ProvidesModel;
-    use RetrievesEntityTestCases;
 
-    public Reference $reference {
+    public \Support\Entities\Models\References\Builder $reference {
         get => $this->entity->builder;
     }
 
     /** @var array<string, mixed> */
     public array $baselineInput {
         get => ['entity' => $this->entity->fqcn->toString()];
-    }
-
-    /** @var array<string, mixed> */
-    public array $shortNameInput {
-        get => ['entity' => $this->entity->name->toString()];
     }
 
     #[Test]

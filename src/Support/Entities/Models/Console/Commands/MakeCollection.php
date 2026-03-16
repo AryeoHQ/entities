@@ -51,7 +51,7 @@ class MakeCollection extends GeneratorCommand implements GeneratesForEntity
             '{{ domainModelNamespace }}',
             '{{ domainModelCollectionName }}',
         ], [
-            $this->entity->fqcn->toString(),
+            $this->entity->fqcn->after('\\')->toString(),
             $this->entity->plural->toString(),
         ], parent::buildClass($name));
     }

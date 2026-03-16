@@ -7,8 +7,7 @@ namespace Support\Entities\Console\Commands;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Stringable;
 use Support\Entities\Console\Contracts\GeneratesEntity;
-use Support\Entities\References;
-use Support\Entities\References\Contracts\Entity as EntityReference;
+use Support\Entities\References\Entity as EntityReference;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Tooling\GeneratorCommands\Concerns\CreatesColocatedTests;
@@ -24,7 +23,7 @@ class MakeEntity extends GeneratorCommand implements GeneratesEntity
     use GeneratorCommandCompatibility;
     use RetrievesNamespace;
 
-    public protected(set) References\Contracts\Entity $entity;
+    public protected(set) EntityReference $entity;
 
     public EntityReference $reference {
         get => $this->entity;
@@ -83,7 +82,7 @@ class MakeEntity extends GeneratorCommand implements GeneratesEntity
 
         $name = str($this->getNameInput())->singular();
 
-        $this->entity = new References\Entity(name: $name, baseNamespace: $this->baseNamespace);
+        $this->entity = new EntityReference(name: $name, baseNamespace: $this->baseNamespace);
     }
 
     private function makePolicy(): void
@@ -120,7 +119,7 @@ class MakeEntity extends GeneratorCommand implements GeneratesEntity
             '{{ domainModelDirectoryNamespace }}',
             '{{ domainModelName }}',
         ], [
-            $this->reference->namespace->toString(),
+            $this->reference->namespace->after('\\')->toString(),
             $this->reference->name->toString(),
         ], $stub);
     }

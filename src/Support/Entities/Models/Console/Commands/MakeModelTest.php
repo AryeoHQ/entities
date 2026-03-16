@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Concerns\HasEvents;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
@@ -15,10 +16,10 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\Contracts\Entity as EntityContract;
+use Support\Entities\Models\References\Model;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
-use Tooling\GeneratorCommands\References\Contracts\Reference;
 use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 use Tooling\GeneratorCommands\Testing\Concerns\RetrievesNamespaceTestCases;
@@ -34,22 +35,22 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
     /** @var array<array-key, string> */
     protected array $files {
         get => [
-            $this->entity->directoryPath->append('/*')->toString(),
-            $this->entity->builder->directoryPath->append('/*')->toString(),
-            $this->entity->collection->directoryPath->append('/*')->toString(),
-            $this->entity->event('creating')->directoryPath->append('/*')->toString(),
-            $this->entity->factory->directoryPath->append('/*')->toString(),
-            $this->entity->policy->directoryPath->append('/*')->toString(),
+            $this->entity->directory->append('/*')->toString(),
+            $this->entity->builder->directory->append('/*')->toString(),
+            $this->entity->collection->directory->append('/*')->toString(),
+            $this->entity->event('creating')->directory->append('/*')->toString(),
+            $this->entity->factory->directory->append('/*')->toString(),
+            $this->entity->policy->directory->append('/*')->toString(),
         ];
     }
 
-    public Reference $reference {
+    public Model $reference {
         get => $this->entity;
     }
 
     /** @var array<string, mixed> */
     public array $baselineInput {
-        get => ['name' => $this->entity->name->toString(), '--namespace' => 'App\\'];
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App\\'];
     }
 
     /** @var array<string, mixed> */
@@ -59,7 +60,7 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
 
     /** @var array<string, mixed> */
     public array $withoutNamespaceBackslashInput {
-        get => ['name' => $this->entity->name->toString(), '--namespace' => 'App'];
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App'];
     }
 
     #[Test]
@@ -123,10 +124,10 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
 
         foreach ((new class // @phpstan-ignore class.missingExtends
         {
-            use \Illuminate\Database\Eloquent\Concerns\HasEvents;
+            use HasEvents;
         })->getObservableEvents() as $event) {
             $ref = $this->entity->event($event);
-            $this->assertStringContainsString("'{$event}' => {$ref->subdirectory}\\{$ref->name}::class,", $model);
+            $this->assertStringContainsString("'{$event}' => {$ref->subNamespace}\\{$ref->name}::class,", $model);
             $this->assertFileExists($ref->filePath->toString());
         }
     }
@@ -190,7 +191,7 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
 
         foreach ((new class // @phpstan-ignore class.missingExtends
         {
-            use \Illuminate\Database\Eloquent\Concerns\HasEvents;
+            use HasEvents;
         })->getObservableEvents() as $event) {
             $this->assertFileDoesNotExist($this->entity->event($event)->filePath->toString());
         }

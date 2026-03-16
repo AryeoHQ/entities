@@ -5,24 +5,17 @@ declare(strict_types=1);
 namespace Support\Entities\Models\References;
 
 use Illuminate\Support\Stringable;
-use Support\Entities\References\Concerns\RequiresEntity;
-use Support\Entities\References\Contracts\Entity;
-use Tooling\GeneratorCommands\References\Contracts\Reference;
+use Tooling\GeneratorCommands\References\GenericClass;
 
-final class Collection implements Reference
+final class Collection extends GenericClass
 {
-    use RequiresEntity;
-
-    public function __construct(Entity $entity)
-    {
-        $this->entity = $entity;
-    }
-
-    public Stringable $name {
-        get => $this->entity->plural;
-    }
-
-    public Stringable $subdirectory {
+    public null|Stringable $subNamespace {
         get => str('Collection');
+    }
+
+    public Model $model {
+        get => Model::fromFqcn(
+            $this->baseNamespace->append('\\', (string) str((string) $this->baseNamespace->afterLast('\\'))->singular()),
+        );
     }
 }

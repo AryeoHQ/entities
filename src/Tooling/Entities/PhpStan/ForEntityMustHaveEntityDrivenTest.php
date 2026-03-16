@@ -39,7 +39,7 @@ class ForEntityMustHaveEntityDrivenTest extends RuleTestCase
         $this->analyse([$this->getFixturePath('Entities/ForEntityWithoutEntityDriven.php')], [
             [
                 'ForEntity must use EntityDriven.',
-                10,
+                11,
             ],
         ]);
     }

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Support\Entities\References\Concerns;
 
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use Support\Entities\References\Policy;
 use Support\Entities\References\Provider;
 
 /**
- * @mixin \PHPUnit\Framework\TestCase
+ * @mixin TestCase
  */
 trait EntityTestCases
 {
@@ -23,13 +24,13 @@ trait EntityTestCases
     #[Test]
     public function it_derives_namespace(): void
     {
-        $this->assertSame('App\\Entities\\Posts', $this->subject->namespace->toString());
+        $this->assertSame('\\Workbench\\App\\Entities\\Posts', $this->subject->namespace->toString());
     }
 
     #[Test]
     public function it_derives_fqcn(): void
     {
-        $this->assertSame('App\\Entities\\Posts\\Post', $this->subject->fqcn->toString());
+        $this->assertSame('\\Workbench\\App\\Entities\\Posts\\Post', $this->subject->fqcn->toString());
     }
 
     #[Test]
@@ -54,18 +55,12 @@ trait EntityTestCases
     #[Test]
     public function it_provides_a_policy_reference(): void
     {
-        $subject = $this->subject;
-
-        $this->assertInstanceOf(Policy::class, $subject->policy);
-        $this->assertSame($subject, $subject->policy->entity);
+        $this->assertInstanceOf(Policy::class, $this->subject->policy);
     }
 
     #[Test]
     public function it_provides_a_provider_reference(): void
     {
-        $subject = $this->subject;
-
-        $this->assertInstanceOf(Provider::class, $subject->provider);
-        $this->assertSame($subject, $subject->provider->entity);
+        $this->assertInstanceOf(Provider::class, $this->subject->provider);
     }
 }
