@@ -103,7 +103,7 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
 
         $serviceProvider = file_get_contents($this->entity->provider->filePath->toString());
 
-        $this->assertStringNotContainsString(class_basename(Relation::class).'::enforceMorphMap', $serviceProvider);
+        $this->assertStringNotContainsString(class_basename(Relation::class).'::morphMap', $serviceProvider);
         $this->assertStringContainsString(
             class_basename(Gate::class).'::policy('.$this->entity->name.'::class, Policy::class);',
             $serviceProvider

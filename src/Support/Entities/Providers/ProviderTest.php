@@ -71,8 +71,18 @@ class ProviderTest extends TestCase
     }
 
     #[Test]
-    public function it_requires_morph_map(): void
+    public function it_requires_morph_map_by_default(): void
     {
         $this->assertTrue(Relation::requiresMorphMap());
+    }
+
+    #[Test]
+    public function it_does_not_require_morph_map_when_config_is_false(): void
+    {
+        config()->set('entities.require_morph_map', false);
+
+        (new Provider($this->app))->boot();
+
+        $this->assertFalse(Relation::requiresMorphMap());
     }
 }
