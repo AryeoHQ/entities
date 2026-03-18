@@ -24,4 +24,7 @@ interface TestsGeneratesEntity
 
     /** @var array<string, mixed> */
     public array $withoutNamespaceBackslashInput { get; }
+
+    /** @var array<string, mixed> */
+    public array $withNestedNamespaceInput { get; }
 }

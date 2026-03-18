@@ -63,6 +63,19 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
         get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App'];
     }
 
+    private Model $nestedEntity {
+        get => new Model(class_basename(static::class), 'Workbench\\App\\Nested\\Deeper\\');
+    }
+
+    /** @var array<string, mixed> */
+    public array $withNestedNamespaceInput {
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App\\Nested\\Deeper'];
+    }
+
+    protected string $expectedNestedFilePath {
+        get => $this->nestedEntity->filePath->toString();
+    }
+
     #[Test]
     public function model_related_files_are_created(): void
     {
