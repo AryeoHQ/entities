@@ -52,6 +52,19 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
         get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App', '--no-model' => true];
     }
 
+    private Entity $nestedEntity {
+        get => new Entity(class_basename(static::class), 'Workbench\\App\\Nested\\Deeper\\');
+    }
+
+    /** @var array<string, mixed> */
+    public array $withNestedNamespaceInput {
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App\\Nested\\Deeper', '--no-model' => true];
+    }
+
+    protected string $expectedNestedFilePath {
+        get => $this->nestedEntity->filePath->toString();
+    }
+
     #[Test]
     public function entity_implements_contract(): void
     {
