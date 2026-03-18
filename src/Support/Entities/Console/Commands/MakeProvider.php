@@ -59,7 +59,7 @@ class MakeProvider extends ProviderMakeCommand implements GeneratesForEntity
             $imports[] = 'use '.Relation::class.';';
             $imports[] = 'use '.$this->entity->fqcn->ltrim('\\').';';
 
-            $bootLines[] = class_basename(Relation::class)."::enforceMorphMap([\n"
+            $bootLines[] = class_basename(Relation::class)."::morphMap([\n"
                 ."            '{$this->entity->variableName}' => {$this->entity->name}::class,\n"
                 .'        ]);';
         } elseif ($this->option('policy')) {

@@ -19,6 +19,8 @@ class Provider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__.'/../../../../config/entities.php', 'entities');
+
         $this->commands([
             MakeBuilder::class,
             MakeCollection::class,
@@ -33,6 +35,6 @@ class Provider extends ServiceProvider
 
     public function boot(): void
     {
-        Relation::requireMorphMap();
+        Relation::requireMorphMap(config('entities.require_morph_map'));
     }
 }

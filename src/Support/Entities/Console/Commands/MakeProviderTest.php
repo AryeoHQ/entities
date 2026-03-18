@@ -41,7 +41,7 @@ class MakeProviderTest extends TestCase implements TestsGeneratesForEntity
         $serviceProvider = file_get_contents($this->reference->filePath->toString());
 
         $this->assertStringContainsString('use '.$this->entity->fqcn->ltrim('\\').';', $serviceProvider);
-        $this->assertStringContainsString(class_basename(Relation::class).'::enforceMorphMap([', $serviceProvider);
+        $this->assertStringContainsString(class_basename(Relation::class).'::morphMap([', $serviceProvider);
         $this->assertStringContainsString("'".$this->entity->variableName."' => ".$this->entity->name.'::class,', $serviceProvider);
     }
 
@@ -53,7 +53,7 @@ class MakeProviderTest extends TestCase implements TestsGeneratesForEntity
         $serviceProvider = file_get_contents($this->reference->filePath->toString());
 
         $this->assertStringNotContainsString(
-            class_basename(Relation::class).'::enforceMorphMap',
+            class_basename(Relation::class).'::morphMap',
             $serviceProvider
         );
         $this->assertStringContainsString('use '.Gate::class.';', $serviceProvider);
