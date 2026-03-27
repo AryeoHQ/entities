@@ -15,9 +15,7 @@ class Models implements Collector
 {
     use Fakeable;
 
-    public string $key = 'models';
-
-    /** @return \Illuminate\Support\Collection<int, string> */
+    /** @return \Illuminate\Support\Collection<int, class-string> */
     public function collect(Composer $composer): Collection
     {
         $classMap = $composer->sourcePsr4ClassMap;

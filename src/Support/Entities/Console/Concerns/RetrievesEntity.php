@@ -8,6 +8,7 @@ use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Stringable;
 use Support\Entities;
 use Support\Entities\References\Entity;
+use Tooling\Entities\Composer\ClassMap\Collectors\Entities as EntitiesCollector;
 use Tooling\GeneratorCommands\Concerns\SearchesClasses;
 
 use function Laravel\Prompts\search;
@@ -26,9 +27,10 @@ trait RetrievesEntity
     /** @var TEntity */
     public protected(set) Entity $entity;
 
-    protected function classMapCacheKey(): string
+    /** @return class-string<\Tooling\Composer\ClassMap\Collectors\Contracts\Collector> */
+    protected function collector(): string
     {
-        return 'entities';
+        return EntitiesCollector::class;
     }
 
     public function retrieveEntity(): Stringable
