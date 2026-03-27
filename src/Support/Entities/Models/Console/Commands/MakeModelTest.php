@@ -20,29 +20,16 @@ use Support\Entities\Models\References\Model;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
-use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
+use Tooling\Composer\Composer;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 use Tooling\GeneratorCommands\Testing\Concerns\RetrievesNamespaceTestCases;
 
 #[CoversClass(MakeModel::class)]
 class MakeModelTest extends TestCase implements TestsGeneratesEntity
 {
-    use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
     use ProvidesModel;
     use RetrievesNamespaceTestCases;
-
-    /** @var array<array-key, string> */
-    protected array $files {
-        get => [
-            $this->entity->directory->append('/*')->toString(),
-            $this->entity->builder->directory->append('/*')->toString(),
-            $this->entity->collection->directory->append('/*')->toString(),
-            $this->entity->event('creating')->directory->append('/*')->toString(),
-            $this->entity->factory->directory->append('/*')->toString(),
-            $this->entity->policy->directory->append('/*')->toString(),
-        ];
-    }
 
     public Model $reference {
         get => $this->entity;
@@ -50,7 +37,7 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
 
     /** @var array<string, mixed> */
     public array $baselineInput {
-        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App\\'];
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'App\\'];
     }
 
     /** @var array<string, mixed> */
@@ -60,16 +47,16 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
 
     /** @var array<string, mixed> */
     public array $withoutNamespaceBackslashInput {
-        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App'];
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'App'];
     }
 
     private Model $nestedEntity {
-        get => new Model(class_basename(static::class), 'Workbench\\App\\Nested\\Deeper\\');
+        get => new Model(class_basename(static::class), 'App\\Nested\\Deeper\\');
     }
 
     /** @var array<string, mixed> */
     public array $withNestedNamespaceInput {
-        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App\\Nested\\Deeper'];
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'App\\Nested\\Deeper'];
     }
 
     protected string $expectedNestedFilePath {
@@ -79,29 +66,33 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
     #[Test]
     public function model_related_files_are_created(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, $this->baselineInput)
             ->assertSuccessful();
 
-        $this->assertFileExists($this->entity->filePath->toString());
-        $this->assertFileExists($this->entity->factory->filePath->toString());
-        $this->assertFileExists($this->entity->builder->filePath->toString());
-        $this->assertFileExists($this->entity->provider->filePath->toString());
-        $this->assertFileExists($this->entity->policy->filePath->toString());
-        $this->assertFileExists($this->entity->policy->test->filePath->toString());
-        $this->assertFileExists($this->entity->test->filePath->toString());
-        $this->assertFileExists($this->entity->collection->filePath->toString());
-        $this->assertFileExists($this->entity->factory->test->filePath->toString());
-        $this->assertFileExists($this->entity->builder->test->filePath->toString());
-        $this->assertFileExists($this->entity->collection->test->filePath->toString());
+        $this->assertTrue($this->app['files']->exists($this->entity->filePath->toString()));
+        $this->assertTrue($this->app['files']->exists($this->entity->factory->filePath->toString()));
+        $this->assertTrue($this->app['files']->exists($this->entity->builder->filePath->toString()));
+        $this->assertTrue($this->app['files']->exists($this->entity->provider->filePath->toString()));
+        $this->assertTrue($this->app['files']->exists($this->entity->policy->filePath->toString()));
+        $this->assertTrue($this->app['files']->exists($this->entity->policy->test->filePath->toString()));
+        $this->assertTrue($this->app['files']->exists($this->entity->test->filePath->toString()));
+        $this->assertTrue($this->app['files']->exists($this->entity->collection->filePath->toString()));
+        $this->assertTrue($this->app['files']->exists($this->entity->factory->test->filePath->toString()));
+        $this->assertTrue($this->app['files']->exists($this->entity->builder->test->filePath->toString()));
+        $this->assertTrue($this->app['files']->exists($this->entity->collection->test->filePath->toString()));
     }
 
     #[Test]
     public function model_contains_the_correct_attributes(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, $this->baselineInput)
             ->assertSuccessful();
 
-        $model = file_get_contents($this->entity->filePath->toString());
+        $model = $this->app['files']->get($this->entity->filePath->toString());
 
         $this->assertStringContainsString('use '.HasUuids::class.';', $model);
         $this->assertStringContainsString('use '.class_basename(HasUuids::class).';', $model);
@@ -128,10 +119,12 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
     #[Test]
     public function model_creates_and_registers_semantic_events(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, $this->baselineInput)
             ->assertSuccessful();
 
-        $model = file_get_contents($this->entity->filePath->toString());
+        $model = $this->app['files']->get($this->entity->filePath->toString());
 
         $this->assertStringContainsString('protected $dispatchesEvents = [', $model);
 
@@ -141,63 +134,71 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
         })->getObservableEvents() as $event) {
             $ref = $this->entity->event($event);
             $this->assertStringContainsString("'{$event}' => {$ref->subNamespace}\\{$ref->name}::class,", $model);
-            $this->assertFileExists($ref->filePath->toString());
+            $this->assertTrue($this->app['files']->exists($ref->filePath->toString()));
         }
     }
 
     #[Test]
     public function no_factory_omits_factory_from_model(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, [...$this->baselineInput, '--no-factory' => true])
             ->assertSuccessful();
 
-        $model = file_get_contents($this->entity->filePath->toString());
+        $model = $this->app['files']->get($this->entity->filePath->toString());
 
         $this->assertStringNotContainsString('UseFactory', $model);
         $this->assertStringNotContainsString('HasFactory', $model);
         $this->assertStringNotContainsString('Factory', $model);
 
-        $this->assertFileDoesNotExist($this->entity->factory->filePath->toString());
-        $this->assertFileDoesNotExist($this->entity->factory->test->filePath->toString());
+        $this->assertFalse($this->app['files']->exists($this->entity->factory->filePath->toString()));
+        $this->assertFalse($this->app['files']->exists($this->entity->factory->test->filePath->toString()));
     }
 
     #[Test]
     public function no_builder_omits_builder_from_model(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, [...$this->baselineInput, '--no-builder' => true])
             ->assertSuccessful();
 
-        $model = file_get_contents($this->entity->filePath->toString());
+        $model = $this->app['files']->get($this->entity->filePath->toString());
 
         $this->assertStringNotContainsString('UseEloquentBuilder', $model);
         $this->assertStringNotContainsString('Builder', $model);
 
-        $this->assertFileDoesNotExist($this->entity->builder->filePath->toString());
-        $this->assertFileDoesNotExist($this->entity->builder->test->filePath->toString());
+        $this->assertFalse($this->app['files']->exists($this->entity->builder->filePath->toString()));
+        $this->assertFalse($this->app['files']->exists($this->entity->builder->test->filePath->toString()));
     }
 
     #[Test]
     public function no_collection_omits_collection_from_model(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, [...$this->baselineInput, '--no-collection' => true])
             ->assertSuccessful();
 
-        $model = file_get_contents($this->entity->filePath->toString());
+        $model = $this->app['files']->get($this->entity->filePath->toString());
 
         $this->assertStringNotContainsString('CollectedBy', $model);
         $this->assertStringNotContainsString('Collection\\'.$this->entity->plural, $model);
 
-        $this->assertFileDoesNotExist($this->entity->collection->filePath->toString());
-        $this->assertFileDoesNotExist($this->entity->collection->test->filePath->toString());
+        $this->assertFalse($this->app['files']->exists($this->entity->collection->filePath->toString()));
+        $this->assertFalse($this->app['files']->exists($this->entity->collection->test->filePath->toString()));
     }
 
     #[Test]
     public function no_events_omits_events_from_model(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, [...$this->baselineInput, '--no-events' => true])
             ->assertSuccessful();
 
-        $model = file_get_contents($this->entity->filePath->toString());
+        $model = $this->app['files']->get($this->entity->filePath->toString());
 
         $this->assertStringNotContainsString('Events', $model);
         $this->assertStringNotContainsString('$dispatchesEvents', $model);
@@ -206,42 +207,48 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
         {
             use HasEvents;
         })->getObservableEvents() as $event) {
-            $this->assertFileDoesNotExist($this->entity->event($event)->filePath->toString());
+            $this->assertFalse($this->app['files']->exists($this->entity->event($event)->filePath->toString()));
         }
     }
 
     #[Test]
     public function no_policy_omits_policy_from_model(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, [...$this->baselineInput, '--no-policy' => true])
             ->assertSuccessful();
 
-        $model = file_get_contents($this->entity->filePath->toString());
+        $model = $this->app['files']->get($this->entity->filePath->toString());
 
         $this->assertStringNotContainsString('UsePolicy', $model);
         $this->assertStringNotContainsString('Policy', $model);
 
-        $this->assertFileDoesNotExist($this->entity->policy->filePath->toString());
-        $this->assertFileDoesNotExist($this->entity->policy->test->filePath->toString());
+        $this->assertFalse($this->app['files']->exists($this->entity->policy->filePath->toString()));
+        $this->assertFalse($this->app['files']->exists($this->entity->policy->test->filePath->toString()));
     }
 
     #[Test]
     public function no_test_skips_test_file(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, [...$this->baselineInput, '--no-test' => true])
             ->assertSuccessful();
 
-        $this->assertFileExists($this->entity->filePath->toString());
-        $this->assertFileDoesNotExist($this->entity->test->filePath->toString());
+        $this->assertTrue($this->app['files']->exists($this->entity->filePath->toString()));
+        $this->assertFalse($this->app['files']->exists($this->entity->test->filePath->toString()));
     }
 
     #[Test]
     public function pivot_model_extends_pivot(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, [...$this->baselineInput, '--pivot' => true])
             ->assertSuccessful();
 
-        $model = file_get_contents($this->entity->filePath->toString());
+        $model = $this->app['files']->get($this->entity->filePath->toString());
 
         $this->assertStringContainsString('use '.Pivot::class.';', $model);
         $this->assertStringContainsString('extends '.class_basename(Pivot::class).' implements', $model);
@@ -255,10 +262,12 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
     #[Test]
     public function morph_pivot_model_extends_morph_pivot(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, [...$this->baselineInput, '--morph-pivot' => true])
             ->assertSuccessful();
 
-        $model = file_get_contents($this->entity->filePath->toString());
+        $model = $this->app['files']->get($this->entity->filePath->toString());
 
         $this->assertStringContainsString('use '.MorphPivot::class.';', $model);
         $this->assertStringContainsString('extends '.class_basename(MorphPivot::class).' implements', $model);
@@ -272,6 +281,8 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
     #[Test]
     public function pivot_and_morph_pivot_are_mutually_exclusive(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, [...$this->baselineInput, '--pivot' => true, '--morph-pivot' => true])
             ->assertFailed();
     }

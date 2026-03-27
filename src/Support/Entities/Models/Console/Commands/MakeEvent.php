@@ -12,13 +12,11 @@ use Support\Entities\Models\Console\Concerns\RetrievesModel;
 use Support\Entities\Models\References\Event;
 use Symfony\Component\Console\Input\InputOption;
 use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
-use Tooling\GeneratorCommands\Concerns\SearchesClasses;
 
 class MakeEvent extends EventMakeCommand implements GeneratesForEntity
 {
     use GeneratorCommandCompatibility;
     use RetrievesModel;
-    use SearchesClasses;
 
     public string $stub = __DIR__.'/stubs/event/event.stub';
 

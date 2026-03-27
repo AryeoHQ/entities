@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\WithCachedConfig;
 use Illuminate\Foundation\Testing\WithCachedRoutes;
 use Orchestra\Testbench;
 use Support\Entities\Providers\Provider;
+use Tooling\Provider as ToolingProvider;
 
 abstract class TestCase extends Testbench\TestCase
 {
@@ -26,6 +27,7 @@ abstract class TestCase extends Testbench\TestCase
     protected function getPackageProviders($app)
     {
         return [
+            ToolingProvider::class,
             Provider::class,
         ];
     }
