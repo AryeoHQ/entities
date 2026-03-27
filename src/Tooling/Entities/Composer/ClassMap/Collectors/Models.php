@@ -9,26 +9,15 @@ use Illuminate\Support\Collection;
 use ReflectionClass;
 use Tooling\Composer\ClassMap\Collectors\Contracts\Collector;
 use Tooling\Composer\ClassMap\Collectors\Provides\Fakeable;
-use Tooling\Composer\Composer;
 
 class Models implements Collector
 {
     use Fakeable;
 
     /** @return \Illuminate\Support\Collection<int, class-string> */
-    public function collect(Composer $composer): Collection
+    public function collect(Collection $classes): Collection
     {
-        $classMap = $composer->sourcePsr4ClassMap;
-
-        $namespaces = $composer->currentAsPackage->psr4Mappings
-            ->map(fn (\Tooling\Composer\Packages\Psr4Mapping $mapping): string => $mapping->prefix->toString())
-            ->unique();
-
-        return collect($classMap)
-            ->keys()
-            ->filter(fn (string $class) => $namespaces->contains(
-                fn (string $namespace) => str_starts_with('\\'.$class, $namespace)
-            ))
+        return $classes
             ->filter(fn (string $class) => rescue(
                 fn () => is_a($class, Model::class, true) && ! (new ReflectionClass($class))->isAbstract(),
                 false,
