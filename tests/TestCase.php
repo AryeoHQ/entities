@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithCachedConfig;
 use Illuminate\Foundation\Testing\WithCachedRoutes;
 use Orchestra\Testbench;
+use Orchestra\Testbench\Concerns\WithWorkbench;
 use Support\Entities\Providers\Provider;
 use Tooling\Provider as ToolingProvider;
 
@@ -17,6 +18,8 @@ abstract class TestCase extends Testbench\TestCase
     use RefreshDatabase;
     use WithCachedConfig;
     use WithCachedRoutes;
+
+    protected $enablesPackageDiscoveries = true;
 
     /**
      * Get package providers.
@@ -27,7 +30,6 @@ abstract class TestCase extends Testbench\TestCase
     protected function getPackageProviders($app)
     {
         return [
-            ToolingProvider::class,
             Provider::class,
         ];
     }
