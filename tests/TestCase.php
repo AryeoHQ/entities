@@ -9,9 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithCachedConfig;
 use Illuminate\Foundation\Testing\WithCachedRoutes;
 use Orchestra\Testbench;
-use Orchestra\Testbench\Concerns\WithWorkbench;
 use Support\Entities\Providers\Provider;
-use Tooling\Provider as ToolingProvider;
 
 abstract class TestCase extends Testbench\TestCase
 {
