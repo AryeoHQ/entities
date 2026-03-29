@@ -93,12 +93,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AryeoHQ/tooling-laravel.git",
-                "reference": "2b856a455de9b435d1eada7c8bcded3c8dcadd33"
+                "reference": "20903facc9142232465e908f85fb3acb43d717bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AryeoHQ/tooling-laravel/zipball/2b856a455de9b435d1eada7c8bcded3c8dcadd33",
-                "reference": "2b856a455de9b435d1eada7c8bcded3c8dcadd33",
+                "url": "https://api.github.com/repos/AryeoHQ/tooling-laravel/zipball/20903facc9142232465e908f85fb3acb43d717bc",
+                "reference": "20903facc9142232465e908f85fb3acb43d717bc",
                 "shasum": ""
             },
             "require": {
@@ -173,7 +173,7 @@
                 "source": "https://github.com/AryeoHQ/tooling-laravel/tree/generator-command-prompt-performance-improvements",
                 "issues": "https://github.com/AryeoHQ/tooling-laravel/issues"
             },
-            "time": "2026-03-27T16:14:28+00:00"
+            "time": "2026-03-29T15:09:01+00:00"
         },
         {
             "name": "brick/math",

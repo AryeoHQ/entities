@@ -9,7 +9,7 @@ use Illuminate\Support\Stringable;
 use Support\Entities;
 use Support\Entities\References\Entity;
 use Tooling\Entities\Composer\ClassMap\Collectors\Entities as EntitiesCollector;
-use Tooling\GeneratorCommands\Concerns\SearchesClasses;
+use Tooling\GeneratorCommands\Concerns\SearchesAutoloadCaches;
 
 use function Laravel\Prompts\search;
 
@@ -22,7 +22,7 @@ trait RetrievesEntity
 {
     use RetrievesEntityFromArgument;
     use RetrievesEntityFromOption;
-    use SearchesClasses;
+    use SearchesAutoloadCaches;
 
     /** @var TEntity */
     public protected(set) Entity $entity;
