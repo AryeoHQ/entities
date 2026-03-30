@@ -184,7 +184,7 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
                 fn ($body) => $body
                     ->push('')
                     ->push('    /**')
-                    ->push('     * @var array<string, string>')
+                    ->push('     * @var array<string, class-string>')
                     ->push('     */')
                     ->push('    protected $dispatchesEvents = [')
                     ->push($this->getObservableEventsString())
