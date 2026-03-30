@@ -9,6 +9,6 @@ use Support\Entities\Models\References\Model;
 trait ProvidesModel
 {
     public Model $entity {
-        get => new Model(class_basename(static::class), 'Workbench\\App\\');
+        get => new Model(class_basename(static::class), 'App\\');
     }
 }

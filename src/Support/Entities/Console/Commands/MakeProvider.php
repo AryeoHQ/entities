@@ -16,7 +16,6 @@ use Support\Entities\References\Provider;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
-use Tooling\GeneratorCommands\Concerns\SearchesClasses;
 
 class MakeProvider extends ProviderMakeCommand implements GeneratesForEntity
 {
@@ -24,8 +23,6 @@ class MakeProvider extends ProviderMakeCommand implements GeneratesForEntity
 
     /** @use RetrievesEntity<Entity> */
     use RetrievesEntity;
-
-    use SearchesClasses;
 
     public string $stub = __DIR__.'/stubs/provider.stub';
 

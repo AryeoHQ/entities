@@ -17,6 +17,8 @@ abstract class TestCase extends Testbench\TestCase
     use WithCachedConfig;
     use WithCachedRoutes;
 
+    protected $enablesPackageDiscoveries = true;
+
     /**
      * Get package providers.
      *

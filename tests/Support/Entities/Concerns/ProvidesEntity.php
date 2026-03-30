@@ -9,6 +9,6 @@ use Support\Entities\References\Entity;
 trait ProvidesEntity
 {
     public Entity $entity {
-        get => new Entity(class_basename(static::class), 'Workbench\\App\\');
+        get => new Entity(class_basename(static::class), 'App\\');
     }
 }

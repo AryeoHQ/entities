@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Support\Entities\Console\Concerns;
 
 use Illuminate\Console\GeneratorCommand;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
-use ReflectionClass;
 use Support\Entities;
 use Support\Entities\References\Entity;
-use Tooling\Composer\Composer;
+use Tooling\Entities\Composer\ClassMap\Collectors\Entities as EntitiesCollector;
+use Tooling\GeneratorCommands\Concerns\SearchesAutoloadCaches;
 
 use function Laravel\Prompts\search;
 
@@ -23,17 +22,15 @@ trait RetrievesEntity
 {
     use RetrievesEntityFromArgument;
     use RetrievesEntityFromOption;
+    use SearchesAutoloadCaches;
 
     /** @var TEntity */
     public protected(set) Entity $entity;
 
-    /**
-     * @param  Collection<int, string>  $classes
-     * @return Collection<int, string>
-     */
-    protected function filterSearchableClasses(Collection $classes): Collection
+    /** @return class-string<\Tooling\Composer\ClassMap\Collectors\Contracts\Collector> */
+    protected function collector(): string
     {
-        return $classes->filter(fn (string $class) => $this->isSearchableEntity($class));
+        return EntitiesCollector::class;
     }
 
     public function retrieveEntity(): Stringable
@@ -67,16 +64,5 @@ trait RetrievesEntity
             required: true,
             scroll: 5,
         ));
-    }
-
-    protected function isSearchableEntity(string $class): bool
-    {
-        $filePath = resolve(Composer::class)->classMap->get($class);
-
-        if (is_string($filePath) && ! file_exists($filePath)) {
-            return false;
-        }
-
-        return is_a($class, Entities\Contracts\Entity::class, true) && ! (new ReflectionClass($class))->isInterface();
     }
 }
