@@ -17,7 +17,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tooling\GeneratorCommands\Concerns\CreatesColocatedTests;
 use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
-use Tooling\GeneratorCommands\Concerns\SearchesClasses;
 
 class MakePolicy extends PolicyMakeCommand implements GeneratesForEntity
 {
@@ -26,8 +25,6 @@ class MakePolicy extends PolicyMakeCommand implements GeneratesForEntity
 
     /** @use RetrievesEntity<Entity> */
     use RetrievesEntity;
-
-    use SearchesClasses;
 
     public string $stub = __DIR__.'/stubs/policy/policy.stub';
 

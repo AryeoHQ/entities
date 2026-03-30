@@ -14,14 +14,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Tooling\GeneratorCommands\Concerns\CreatesColocatedTests;
 use Tooling\GeneratorCommands\Concerns\GeneratorCommandCompatibility;
-use Tooling\GeneratorCommands\Concerns\SearchesClasses;
 
 class MakeFactory extends FactoryMakeCommand implements GeneratesForEntity
 {
     use CreatesColocatedTests;
     use GeneratorCommandCompatibility;
     use RetrievesModel;
-    use SearchesClasses;
 
     public string $stub = __DIR__.'/stubs/factory/factory.stub';
 

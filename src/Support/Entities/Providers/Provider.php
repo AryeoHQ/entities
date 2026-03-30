@@ -14,12 +14,16 @@ use Support\Entities\Models\Console\Commands\MakeCollection;
 use Support\Entities\Models\Console\Commands\MakeEvent;
 use Support\Entities\Models\Console\Commands\MakeFactory;
 use Support\Entities\Models\Console\Commands\MakeModel;
+use Tooling\Entities\Composer\ClassMap\Collectors\Entities;
+use Tooling\Entities\Composer\ClassMap\Collectors\Models;
 
 class Provider extends ServiceProvider
 {
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../../../../config/entities.php', 'entities');
+
+        $this->app->tag([Entities::class, Models::class], 'tooling.classmap.collectors');
 
         $this->commands([
             MakeBuilder::class,

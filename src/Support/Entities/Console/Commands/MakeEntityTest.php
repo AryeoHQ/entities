@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Support\Entities\Console\Commands;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -13,25 +14,16 @@ use Support\Entities\References\Entity;
 use Tests\Support\Entities\Concerns\ProvidesEntity;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesEntity;
 use Tests\TestCase;
-use Tooling\GeneratorCommands\Testing\Concerns\CleansUpGeneratorCommands;
+use Tooling\Composer\Composer;
 use Tooling\GeneratorCommands\Testing\Concerns\GeneratesFileTestCases;
 use Tooling\GeneratorCommands\Testing\Concerns\RetrievesNamespaceTestCases;
 
 #[CoversClass(MakeEntity::class)]
 class MakeEntityTest extends TestCase implements TestsGeneratesEntity
 {
-    use CleansUpGeneratorCommands;
     use GeneratesFileTestCases;
     use ProvidesEntity;
     use RetrievesNamespaceTestCases;
-
-    /** @var array<array-key, string> */
-    protected array $files {
-        get => [
-            $this->entity->directory->append('/*')->toString(),
-            $this->entity->policy->directory->append('/*')->toString(),
-        ];
-    }
 
     public Entity $reference {
         get => $this->entity;
@@ -39,7 +31,7 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
 
     /** @var array<string, mixed> */
     public array $baselineInput {
-        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App\\', '--no-model' => true];
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'App\\', '--no-model' => true];
     }
 
     /** @var array<string, mixed> */
@@ -49,16 +41,16 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
 
     /** @var array<string, mixed> */
     public array $withoutNamespaceBackslashInput {
-        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App', '--no-model' => true];
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'App', '--no-model' => true];
     }
 
     private Entity $nestedEntity {
-        get => new Entity(class_basename(static::class), 'Workbench\\App\\Nested\\Deeper\\');
+        get => new Entity(class_basename(static::class), 'App\\Nested\\Deeper\\');
     }
 
     /** @var array<string, mixed> */
     public array $withNestedNamespaceInput {
-        get => ['name' => $this->entity->name->toString(), '--namespace' => 'Workbench\\App\\Nested\\Deeper', '--no-model' => true];
+        get => ['name' => $this->entity->name->toString(), '--namespace' => 'App\\Nested\\Deeper', '--no-model' => true];
     }
 
     protected string $expectedNestedFilePath {
@@ -68,9 +60,11 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
     #[Test]
     public function entity_implements_contract(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, $this->baselineInput)->assertSuccessful();
 
-        $entity = file_get_contents($this->entity->filePath->toString());
+        $entity = File::get($this->entity->filePath->toString());
 
         $this->assertStringContainsString('use '.EntityContract::class.';', $entity);
         $this->assertStringContainsString(
@@ -82,26 +76,32 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
     #[Test]
     public function entity_test_file_is_created(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, $this->baselineInput)->assertSuccessful();
-        $this->assertFileExists($this->entity->test->filePath->toString());
+        $this->assertTrue(File::exists($this->entity->test->filePath->toString()));
     }
 
     #[Test]
     public function entity_policy_is_created(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, $this->baselineInput)->assertSuccessful();
-        $this->assertFileExists($this->entity->policy->filePath->toString());
-        $this->assertFileExists($this->entity->policy->test->filePath->toString());
+        $this->assertTrue(File::exists($this->entity->policy->filePath->toString()));
+        $this->assertTrue(File::exists($this->entity->policy->test->filePath->toString()));
     }
 
     #[Test]
     public function entity_provider_registers_policy_via_gate(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, $this->baselineInput)->assertSuccessful();
 
-        $this->assertFileExists($this->entity->provider->filePath->toString());
+        $this->assertTrue(File::exists($this->entity->provider->filePath->toString()));
 
-        $serviceProvider = file_get_contents($this->entity->provider->filePath->toString());
+        $serviceProvider = File::get($this->entity->provider->filePath->toString());
 
         $this->assertStringNotContainsString(class_basename(Relation::class).'::morphMap', $serviceProvider);
         $this->assertStringContainsString(
@@ -113,32 +113,38 @@ class MakeEntityTest extends TestCase implements TestsGeneratesEntity
     #[Test]
     public function model_flag_warns_to_use_make_model(): void
     {
-        $this->artisan($this->command, ['name' => $this->entity->name, '--namespace' => 'Workbench\\App\\'])
+        Composer::fake();
+
+        $this->artisan($this->command, ['name' => $this->entity->name, '--namespace' => 'App\\'])
             ->expectsQuestion('Did you intend to create a model?', true)
             ->expectsOutputToContain('make:model')
             ->assertSuccessful();
 
-        $this->assertFileDoesNotExist($this->entity->filePath->toString());
+        $this->assertFalse(File::exists($this->entity->filePath->toString()));
     }
 
     #[Test]
     public function model_flag_continues_as_entity_when_declined(): void
     {
-        $this->artisan($this->command, ['name' => $this->entity->name, '--namespace' => 'Workbench\\App\\'])
+        Composer::fake();
+
+        $this->artisan($this->command, ['name' => $this->entity->name, '--namespace' => 'App\\'])
             ->expectsQuestion('Did you intend to create a model?', false)
             ->assertSuccessful();
 
-        $this->assertFileExists($this->entity->filePath->toString());
+        $this->assertTrue(File::exists($this->entity->filePath->toString()));
     }
 
     #[Test]
     public function no_policy_omits_gate_from_provider(): void
     {
+        Composer::fake();
+
         $this->artisan($this->command, [...$this->baselineInput, '--no-policy' => true])->assertSuccessful();
 
-        $this->assertFileDoesNotExist($this->entity->policy->filePath->toString());
+        $this->assertFalse(File::exists($this->entity->policy->filePath->toString()));
 
-        $provider = file_get_contents($this->entity->provider->filePath->toString());
+        $provider = File::get($this->entity->provider->filePath->toString());
 
         $this->assertStringNotContainsString(Gate::class.'::policy', $provider);
         $this->assertStringNotContainsString(Gate::class, $provider);
