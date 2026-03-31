@@ -14,8 +14,8 @@ use Tooling\Rector\Rules\Provides\ValidatesAttributes;
 use Tooling\Rector\Testing\ParsesNodes;
 use Tooling\Rector\Testing\ResolvesRectorRules;
 
-#[CoversClass(EntityMustHaveBroadcastAs::class)]
-class EntityMustHaveBroadcastAsTest extends TestCase
+#[CoversClass(ForEntityMustHaveBroadcastAs::class)]
+class ForEntityMustHaveBroadcastAsTest extends TestCase
 {
     use GetsFixtures;
     use ParsesNodes;
@@ -29,7 +29,7 @@ class EntityMustHaveBroadcastAsTest extends TestCase
 
         $this->assertFalse($this->hasAttribute($classNode, BroadcastAs::class));
 
-        $rule = $this->resolveRule(EntityMustHaveBroadcastAs::class);
+        $rule = $this->resolveRule(ForEntityMustHaveBroadcastAs::class);
         $result = $rule->refactor($classNode);
 
         $this->assertInstanceOf(Class_::class, $result);
@@ -41,7 +41,7 @@ class EntityMustHaveBroadcastAsTest extends TestCase
     {
         $classNode = $this->getClassNode($this->getFixturePath('Entities/ValidEntityEvent.php'));
 
-        $rule = $this->resolveRule(EntityMustHaveBroadcastAs::class);
+        $rule = $this->resolveRule(ForEntityMustHaveBroadcastAs::class);
         $result = $rule->refactor($classNode);
 
         $this->assertNull($result);
@@ -52,7 +52,7 @@ class EntityMustHaveBroadcastAsTest extends TestCase
     {
         $classNode = $this->getClassNode($this->getFixturePath('Entities/ClassWithoutEntityDriven.php'));
 
-        $rule = $this->resolveRule(EntityMustHaveBroadcastAs::class);
+        $rule = $this->resolveRule(ForEntityMustHaveBroadcastAs::class);
         $result = $rule->refactor($classNode);
 
         $this->assertNull($result);

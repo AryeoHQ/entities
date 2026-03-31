@@ -1,6 +1,6 @@
 <?php
 
-use Tooling\Entities\Rector\EntityMustHaveBroadcastAs;
+use Tooling\Entities\Rector\ForEntityMustHaveBroadcastAs;
 use Tooling\Entities\Rector\ModelMustHaveCollectedBy;
 use Tooling\Entities\Rector\ModelMustHaveHasFactory;
 use Tooling\Entities\Rector\ModelMustHaveHasUuids;
@@ -9,7 +9,7 @@ use Tooling\Entities\Rector\ModelMustHaveUseFactory;
 use Tooling\Entities\Rector\ModelMustHaveUsePolicy;
 
 return [
-    EntityMustHaveBroadcastAs::class,
+    ForEntityMustHaveBroadcastAs::class,
     ModelMustHaveCollectedBy::class,
     ModelMustHaveHasFactory::class,
     ModelMustHaveHasUuids::class,

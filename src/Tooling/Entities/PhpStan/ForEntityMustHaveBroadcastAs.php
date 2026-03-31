@@ -16,7 +16,7 @@ use Tooling\Rules\Attributes\NodeType;
  * @extends Rule<Class_>
  */
 #[NodeType(Class_::class)]
-final class EntityMustHaveBroadcastAs extends Rule
+final class ForEntityMustHaveBroadcastAs extends Rule
 {
     /**
      * @param  Class_  $node
@@ -34,7 +34,7 @@ final class EntityMustHaveBroadcastAs extends Rule
     {
         $this->error(
             message: 'ForEntity must have a #[BroadcastAs] attribute.',
-            line: $node->getStartLine(),
+            line: $node->name?->getStartLine() ?? $node->getStartLine(),
             identifier: 'entities.broadcastAs',
         );
     }
