@@ -36,7 +36,7 @@ final class ModelMustHaveUsePolicy extends Rule
     {
         $this->error(
             message: 'Model must have a #[UsePolicy] attribute.',
-            line: $node->getStartLine(),
+            line: $node->name?->getStartLine() ?? $node->getStartLine(),
             identifier: 'entities.usePolicy',
         );
     }

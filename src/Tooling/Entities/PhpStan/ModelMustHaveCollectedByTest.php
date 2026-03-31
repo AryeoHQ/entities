@@ -39,7 +39,7 @@ class ModelMustHaveCollectedByTest extends RuleTestCase
         $this->analyse([$this->getFixturePath('Entities/ModelWithoutCollectedBy.php')], [
             [
                 'Model must have a #[CollectedBy] attribute.',
-                11,
+                13,
             ],
         ]);
     }

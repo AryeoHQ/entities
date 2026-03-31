@@ -10,15 +10,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Tooling\Concerns\GetsFixtures;
 
-/** @extends RuleTestCase<EntityMustHaveBroadcastAs> */
-#[CoversClass(EntityMustHaveBroadcastAs::class)]
-class EntityMustHaveBroadcastAsTest extends RuleTestCase
+/** @extends RuleTestCase<ForEntityMustHaveBroadcastAs> */
+#[CoversClass(ForEntityMustHaveBroadcastAs::class)]
+class ForEntityMustHaveBroadcastAsTest extends RuleTestCase
 {
     use GetsFixtures;
 
     protected function getRule(): Rule
     {
-        return new EntityMustHaveBroadcastAs;
+        return new ForEntityMustHaveBroadcastAs;
     }
 
     #[Test]
@@ -39,7 +39,7 @@ class EntityMustHaveBroadcastAsTest extends RuleTestCase
         $this->analyse([$this->getFixturePath('Entities/ForEntityWithoutBroadcastAs.php')], [
             [
                 'ForEntity must have a #[BroadcastAs] attribute.',
-                12,
+                13,
             ],
         ]);
     }

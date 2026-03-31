@@ -36,7 +36,7 @@ final class ModelMustHaveUseEloquentBuilder extends Rule
     {
         $this->error(
             message: 'Model must have a #[UseEloquentBuilder] attribute.',
-            line: $node->getStartLine(),
+            line: $node->name?->getStartLine() ?? $node->getStartLine(),
             identifier: 'entities.useEloquentBuilder',
         );
     }

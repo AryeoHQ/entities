@@ -36,7 +36,7 @@ final class ModelMustHaveUseFactory extends Rule
     {
         $this->error(
             message: 'Model must have a #[UseFactory] attribute.',
-            line: $node->getStartLine(),
+            line: $node->name?->getStartLine() ?? $node->getStartLine(),
             identifier: 'entities.useFactory',
         );
     }

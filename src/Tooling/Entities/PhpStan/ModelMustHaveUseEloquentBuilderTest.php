@@ -39,7 +39,7 @@ class ModelMustHaveUseEloquentBuilderTest extends RuleTestCase
         $this->analyse([$this->getFixturePath('Entities/ModelWithoutUseEloquentBuilder.php')], [
             [
                 'Model must have a #[UseEloquentBuilder] attribute.',
-                10,
+                12,
             ],
         ]);
     }

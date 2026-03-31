@@ -39,7 +39,7 @@ class ModelMustHaveUseFactoryTest extends RuleTestCase
         $this->analyse([$this->getFixturePath('Entities/ModelWithoutUseFactory.php')], [
             [
                 'Model must have a #[UseFactory] attribute.',
-                10,
+                12,
             ],
         ]);
     }

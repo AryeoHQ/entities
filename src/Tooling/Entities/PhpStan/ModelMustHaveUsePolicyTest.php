@@ -39,7 +39,7 @@ class ModelMustHaveUsePolicyTest extends RuleTestCase
         $this->analyse([$this->getFixturePath('Entities/ModelWithoutUsePolicy.php')], [
             [
                 'Model must have a #[UsePolicy] attribute.',
-                10,
+                12,
             ],
         ]);
     }

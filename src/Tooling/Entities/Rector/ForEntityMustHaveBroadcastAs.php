@@ -20,7 +20,7 @@ use Tooling\Rules\Attributes\NodeType;
  * @extends Rule<Class_>
  */
 #[NodeType(Class_::class)]
-final class EntityMustHaveBroadcastAs extends Rule
+final class ForEntityMustHaveBroadcastAs extends Rule
 {
     /**
      * @param  Class_  $node
