@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Support\Entities\Providers;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Support\ServiceProvider;
 use Support\Entities\Console\Commands\MakeEntity;
 use Support\Entities\Console\Commands\MakePolicy;
 use Support\Entities\Console\Commands\MakeProvider;
+use Support\Entities\Events\Dispatcher\Mixins\DisablesSerializesModels;
 use Support\Entities\Models\Console\Commands\MakeBuilder;
 use Support\Entities\Models\Console\Commands\MakeCollection;
 use Support\Entities\Models\Console\Commands\MakeEvent;
@@ -39,6 +41,8 @@ class Provider extends ServiceProvider
 
     public function boot(): void
     {
+        Dispatcher::mixin(new DisablesSerializesModels);
+
         Relation::requireMorphMap(config('entities.require_morph_map'));
     }
 }

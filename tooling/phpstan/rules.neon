@@ -4,7 +4,7 @@ parameters:
             identifier: trait.unused
             paths:
                 - ../../src/Support/Entities/Events/Provides/EntityDriven.php
-
+                - ../../src/Support/Entities/Events/Concerns/SerializesModels.php
 services:
     -
         class: Tooling\Entities\PhpStan\ModelMustImplementEntity
@@ -48,5 +48,9 @@ services:
             - phpstan.rules.rule
     -
         class: Tooling\Entities\PhpStan\ModelMustNotDefineScopeMethods
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\EntityDrivenMustUseSerializesModels
         tags:
             - phpstan.rules.rule
