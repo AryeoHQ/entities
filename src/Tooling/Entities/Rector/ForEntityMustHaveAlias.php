@@ -11,7 +11,7 @@ use PhpParser\Node\AttributeGroup;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Class_;
-use Support\Entities\Events\Attributes\BroadcastAs;
+use Support\Entities\Events\Attributes\Alias;
 use Support\Entities\Events\Contracts\ForEntity;
 use Tooling\Rector\Rules\Rule;
 use Tooling\Rules\Attributes\NodeType;
@@ -20,7 +20,7 @@ use Tooling\Rules\Attributes\NodeType;
  * @extends Rule<Class_>
  */
 #[NodeType(Class_::class)]
-final class ForEntityMustHaveBroadcastAs extends Rule
+final class ForEntityMustHaveAlias extends Rule
 {
     /**
      * @param  Class_  $node
@@ -28,7 +28,7 @@ final class ForEntityMustHaveBroadcastAs extends Rule
     public function shouldHandle(Node $node): bool
     {
         return $this->inherits($node, ForEntity::class)
-            && $this->doesNotHaveAttribute($node, BroadcastAs::class);
+            && $this->doesNotHaveAttribute($node, Alias::class);
     }
 
     /**
@@ -42,11 +42,11 @@ final class ForEntityMustHaveBroadcastAs extends Rule
             return null;
         }
 
-        $broadcastName = $this->deriveBroadcastName($className);
+        $derivedName = $this->deriveName($className);
 
         $attribute = new Attribute(
-            new FullyQualified(BroadcastAs::class),
-            [new Arg(new String_($broadcastName))],
+            new FullyQualified(Alias::class),
+            [new Arg(new String_($derivedName))],
         );
 
         array_unshift($node->attrGroups, new AttributeGroup([$attribute]));
@@ -54,7 +54,7 @@ final class ForEntityMustHaveBroadcastAs extends Rule
         return $node;
     }
 
-    private function deriveBroadcastName(string $className): string
+    private function deriveName(string $className): string
     {
         $parts = preg_split('/(?=[A-Z])/', $className, -1, PREG_SPLIT_NO_EMPTY);
 

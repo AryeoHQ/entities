@@ -8,13 +8,13 @@ use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\Test;
 use ReflectionClass;
 use Support\Entities\Contracts\Entity;
-use Support\Entities\Events\Attributes\BroadcastAs;
-use Support\Entities\Events\Attributes\Exceptions\BroadcastAsMissing;
+use Support\Entities\Events\Attributes\Alias;
+use Support\Entities\Events\Attributes\Exceptions\AliasMissing;
 use Support\Entities\Events\Contracts\ForEntity;
 use Support\Entities\Events\Contracts\ForEntityTestCases;
 use Tests\Fixtures\Support\Posts\Events\Created;
 use Tests\Fixtures\Support\Posts\Post;
-use Tests\Fixtures\Tooling\Entities\ForEntityWithoutBroadcastAs;
+use Tests\Fixtures\Tooling\Entities\ForEntityWithoutAlias;
 use Tests\Support\Entities\Events\Contracts\TestsForEntity;
 use Tests\TestCase;
 
@@ -50,42 +50,39 @@ class EntityDrivenTest extends TestCase implements TestsForEntity
     }
 
     #[Test]
-    public function it_derives_name(): void
+    public function it_derives_alias(): void
     {
         $event = new Created(Post::factory()->make());
 
         $expected = (new ReflectionClass($event))
-            ->getAttributes(BroadcastAs::class)[0]
+            ->getAttributes(Alias::class)[0]
             ->newInstance()
             ->name;
 
-        $this->assertSame($expected, $event->broadcastAs());
+        $this->assertSame($expected, $event->alias->toString());
     }
 
     #[Test]
-    public function it_derives_unique_name_by_interpolating_entity_id(): void
+    public function it_derives_unique_alias_by_interpolating_entity_id(): void
     {
         $post = Post::factory()->make();
         $event = new Created($post);
 
-        $reflection = new ReflectionClass($event);
-        $property = $reflection->getProperty('uniqueName');
-
         $this->assertSame(
             "post.{$post->id}.created",
-            $property->getValue($event),
+            $event->uniqueAlias->toString(),
         );
     }
 
     #[Test]
-    public function it_throws_when_broadcast_as_attribute_is_missing(): void
+    public function it_throws_when_alias_attribute_is_missing(): void
     {
         /** @var Post $post */
         $post = Post::factory()->make();
-        $event = new ForEntityWithoutBroadcastAs($post);
+        $event = new ForEntityWithoutAlias($post);
 
-        $this->expectException(BroadcastAsMissing::class);
+        $this->expectException(AliasMissing::class);
 
-        $event->broadcastAs();
+        $event->alias; // @phpstan-ignore expr.resultUnused
     }
 }

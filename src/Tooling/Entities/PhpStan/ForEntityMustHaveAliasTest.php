@@ -10,19 +10,19 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Tooling\Concerns\GetsFixtures;
 
-/** @extends RuleTestCase<ForEntityMustHaveBroadcastAs> */
-#[CoversClass(ForEntityMustHaveBroadcastAs::class)]
-class ForEntityMustHaveBroadcastAsTest extends RuleTestCase
+/** @extends RuleTestCase<ForEntityMustHaveAlias> */
+#[CoversClass(ForEntityMustHaveAlias::class)]
+class ForEntityMustHaveAliasTest extends RuleTestCase
 {
     use GetsFixtures;
 
     protected function getRule(): Rule
     {
-        return new ForEntityMustHaveBroadcastAs;
+        return new ForEntityMustHaveAlias;
     }
 
     #[Test]
-    public function it_passes_when_for_entity_has_broadcast_as_attribute(): void
+    public function it_passes_when_for_entity_has_alias_attribute(): void
     {
         $this->analyse([$this->getFixturePath('Entities/ValidEntityEvent.php')], []);
     }
@@ -34,12 +34,12 @@ class ForEntityMustHaveBroadcastAsTest extends RuleTestCase
     }
 
     #[Test]
-    public function it_fails_when_for_entity_is_missing_broadcast_as_attribute(): void
+    public function it_fails_when_for_entity_is_missing_alias_attribute(): void
     {
-        $this->analyse([$this->getFixturePath('Entities/ForEntityWithoutBroadcastAs.php')], [
+        $this->analyse([$this->getFixturePath('Entities/ForEntityWithoutAlias.php')], [
             [
-                'ForEntity must have a #[BroadcastAs] attribute.',
-                13,
+                'ForEntity must have a #[Alias] attribute.',
+                12,
             ],
         ]);
     }

@@ -11,7 +11,7 @@ services:
         tags:
             - phpstan.rules.rule
     -
-        class: Tooling\Entities\PhpStan\ForEntityMustHaveBroadcastAs
+        class: Tooling\Entities\PhpStan\ForEntityMustHaveAlias
         tags:
             - phpstan.rules.rule
     -

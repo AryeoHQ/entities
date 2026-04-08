@@ -9,13 +9,13 @@ use PHPUnit\Framework\Attributes\Test;
 use ReflectionClass;
 use Tests\TestCase;
 
-#[CoversClass(BroadcastAs::class)]
-class BroadcastAsTest extends TestCase
+#[CoversClass(Alias::class)]
+class AliasTest extends TestCase
 {
     #[Test]
-    public function it_stores_the_broadcast_name(): void
+    public function it_stores_the_name(): void
     {
-        $attribute = new BroadcastAs('post.created');
+        $attribute = new Alias('post.created');
 
         $this->assertSame('post.created', $attribute->name);
     }
@@ -23,7 +23,7 @@ class BroadcastAsTest extends TestCase
     #[Test]
     public function it_targets_classes(): void
     {
-        $reflection = new ReflectionClass(BroadcastAs::class);
+        $reflection = new ReflectionClass(Alias::class);
         $attributes = $reflection->getAttributes(\Attribute::class);
 
         $this->assertNotEmpty($attributes);

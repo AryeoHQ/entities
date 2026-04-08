@@ -7,7 +7,7 @@ namespace Support\Entities\Events\Attributes;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final class BroadcastAs
+final class Alias
 {
     public readonly string $name;
 
