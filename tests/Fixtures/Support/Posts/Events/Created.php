@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Fixtures\Support\Posts\Events;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Support\Entities\Events\Attributes\BroadcastAs;
+use Support\Entities\Events\Attributes\Alias;
 use Support\Entities\Events\Contracts\ForEntity;
 use Support\Entities\Events\Provides\EntityDriven;
 use Tests\Fixtures\Support\Posts\Post;
 
-#[BroadcastAs('post.created')]
+#[Alias('post.created')]
 final class Created implements ForEntity
 {
     use EntityDriven;
@@ -21,15 +19,5 @@ final class Created implements ForEntity
     public function __construct(Post $entity)
     {
         $this->entity = $entity;
-    }
-
-    /**
-     * @return array<int, Channel>
-     */
-    public function broadcastOn(): array
-    {
-        return [
-            new PrivateChannel($this->uniqueName),
-        ];
     }
 }

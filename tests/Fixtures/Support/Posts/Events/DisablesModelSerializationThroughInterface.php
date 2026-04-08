@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Fixtures\Support\Posts\Events;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Support\Entities\Events\Attributes\BroadcastAs;
+use Support\Entities\Events\Attributes\Alias;
 use Support\Entities\Events\Contracts\ForEntity;
 use Support\Entities\Events\Provides\EntityDriven;
 use Tests\Fixtures\Support\Posts\Post;
 
-#[BroadcastAs('post.disables_model_serialization_through_interface')]
+#[Alias('post.disables_model_serialization_through_interface')]
 final class DisablesModelSerializationThroughInterface implements \Stringable, ForEntity
 {
     use EntityDriven;
@@ -26,15 +24,5 @@ final class DisablesModelSerializationThroughInterface implements \Stringable, F
     public function __toString(): string
     {
         return self::class;
-    }
-
-    /**
-     * @return array<int, Channel>
-     */
-    public function broadcastOn(): array
-    {
-        return [
-            new PrivateChannel($this->uniqueName),
-        ];
     }
 }

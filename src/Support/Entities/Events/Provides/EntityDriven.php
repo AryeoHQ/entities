@@ -4,30 +4,26 @@ declare(strict_types=1);
 
 namespace Support\Entities\Events\Provides;
 
-use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Support\Stringable;
 use ReflectionClass;
-use Support\Entities\Events\Attributes\BroadcastAs;
-use Support\Entities\Events\Attributes\Exceptions\BroadcastAsMissing;
+use Support\Entities\Events\Attributes\Alias;
+use Support\Entities\Events\Attributes\Exceptions\AliasMissing;
 use Support\Entities\Events\Concerns\SerializesModels;
 
 trait EntityDriven
 {
     use Dispatchable;
-    use InteractsWithSockets;
     use SerializesModels;
 
-    protected string $name {
-        get => collect((new ReflectionClass($this))->getAttributes(BroadcastAs::class))
-            ->first()?->newInstance()->name ?? throw BroadcastAsMissing::on(static::class);
+    public Stringable $alias {
+        get => str(
+            collect((new ReflectionClass($this))->getAttributes(Alias::class))
+                ->first()?->newInstance()->name ?? throw AliasMissing::on(static::class)
+        );
     }
 
-    protected string $uniqueName {
-        get => str($this->name)->explode('.')->join(".{$this->entity->id}.");
-    }
-
-    public function broadcastAs(): string
-    {
-        return $this->name;
+    public Stringable $uniqueAlias {
+        get => str($this->alias->explode('.')->join(".{$this->entity->id}."));
     }
 }

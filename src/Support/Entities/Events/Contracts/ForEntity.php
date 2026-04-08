@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Support\Entities\Events\Contracts;
 
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Stringable;
 use Support\Entities\Contracts\Entity;
 
-interface ForEntity extends ShouldBroadcast
+interface ForEntity
 {
     public Entity $entity { get; }
 
-    public function broadcastAs(): string;
+    public Stringable $alias { get; }
+
+    public Stringable $uniqueAlias { get; }
 }

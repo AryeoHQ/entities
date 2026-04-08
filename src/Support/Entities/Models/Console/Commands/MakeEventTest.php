@@ -7,7 +7,7 @@ namespace Support\Entities\Models\Console\Commands;
 use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Events\Attributes\BroadcastAs;
+use Support\Entities\Events\Attributes\Alias;
 use Support\Entities\Events\Contracts\ForEntity;
 use Support\Entities\Events\Provides\EntityDriven;
 use Support\Entities\Models\References\Event;
@@ -35,7 +35,7 @@ class MakeEventTest extends TestCase implements TestsGeneratesForEntity
     }
 
     #[Test]
-    public function it_generates_an_event_with_the_broadcast_as_attribute(): void
+    public function it_generates_an_event_with_the_alias_attribute(): void
     {
         Composer::fake();
 
@@ -43,7 +43,7 @@ class MakeEventTest extends TestCase implements TestsGeneratesForEntity
 
         $contents = File::get($this->reference->filePath->toString());
 
-        $this->assertStringContainsString('#['.class_basename(BroadcastAs::class)."('".$this->entity->variableName.".created')]", $contents);
+        $this->assertStringContainsString('#['.class_basename(Alias::class)."('".$this->entity->variableName.".created')]", $contents);
     }
 
     #[Test]
@@ -91,7 +91,7 @@ class MakeEventTest extends TestCase implements TestsGeneratesForEntity
 
         $contents = File::get($this->entity->event('ForceDeleted')->filePath->toString());
 
-        $this->assertStringContainsString('#['.class_basename(BroadcastAs::class)."('".$this->entity->variableName.".force-deleted')]", $contents);
+        $this->assertStringContainsString('#['.class_basename(Alias::class)."('".$this->entity->variableName.".force-deleted')]", $contents);
     }
 
     #[Test]

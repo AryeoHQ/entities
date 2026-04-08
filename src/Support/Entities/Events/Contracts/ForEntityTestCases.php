@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Support\Entities\Events\Contracts;
 
-use Illuminate\Broadcasting\Channel;
+use Illuminate\Support\Stringable;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -14,11 +14,16 @@ use Tests\TestCase;
 trait ForEntityTestCases
 {
     #[Test]
-    public function it_can_broadcast(): void
+    public function it_has_an_alias(): void
     {
-        $channels = $this->event->broadcastOn();
+        $this->assertInstanceOf(Stringable::class, $this->event->alias);
+        $this->assertNotEmpty($this->event->alias->toString());
+    }
 
-        $this->assertNotEmpty($channels);
-        $this->assertContainsOnlyInstancesOf(Channel::class, $channels);
+    #[Test]
+    public function it_has_a_unique_alias(): void
+    {
+        $this->assertInstanceOf(Stringable::class, $this->event->uniqueAlias);
+        $this->assertNotEmpty($this->event->uniqueAlias->toString());
     }
 }

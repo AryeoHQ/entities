@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Fixtures\Tooling\Entities;
 
-use Illuminate\Broadcasting\Channel;
 use Support\Entities\Contracts\Entity;
 use Support\Entities\Events\Contracts\ForEntity;
 use Support\Entities\Events\Provides\EntityDriven;
 
 #[\AllowDynamicProperties]
-final class ForEntityWithoutBroadcastAs implements ForEntity
+final class ForEntityWithoutAlias implements ForEntity
 {
     use EntityDriven;
 
@@ -19,11 +18,5 @@ final class ForEntityWithoutBroadcastAs implements ForEntity
     public function __construct(Entity $entity)
     {
         $this->entity = $entity;
-    }
-
-    /** @return array<int, Channel> */
-    public function broadcastOn(): array
-    {
-        return [];
     }
 }

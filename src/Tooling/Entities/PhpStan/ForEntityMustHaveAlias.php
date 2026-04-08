@@ -7,7 +7,7 @@ namespace Tooling\Entities\PhpStan;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PHPStan\Analyser\Scope;
-use Support\Entities\Events\Attributes\BroadcastAs;
+use Support\Entities\Events\Attributes\Alias;
 use Support\Entities\Events\Contracts\ForEntity;
 use Tooling\PhpStan\Rules\Rule;
 use Tooling\Rules\Attributes\NodeType;
@@ -16,7 +16,7 @@ use Tooling\Rules\Attributes\NodeType;
  * @extends Rule<Class_>
  */
 #[NodeType(Class_::class)]
-final class ForEntityMustHaveBroadcastAs extends Rule
+final class ForEntityMustHaveAlias extends Rule
 {
     /**
      * @param  Class_  $node
@@ -24,7 +24,7 @@ final class ForEntityMustHaveBroadcastAs extends Rule
     public function shouldHandle(Node $node, Scope $scope): bool
     {
         return $this->inherits($node, ForEntity::class)
-            && $this->doesNotHaveAttribute($node, BroadcastAs::class);
+            && $this->doesNotHaveAttribute($node, Alias::class);
     }
 
     /**
@@ -33,9 +33,9 @@ final class ForEntityMustHaveBroadcastAs extends Rule
     public function handle(Node $node, Scope $scope): void
     {
         $this->error(
-            message: 'ForEntity must have a #[BroadcastAs] attribute.',
+            message: 'ForEntity must have a #[Alias] attribute.',
             line: $node->name?->getStartLine() ?? $node->getStartLine(),
-            identifier: 'entities.broadcastAs',
+            identifier: 'entities.alias',
         );
     }
 }
