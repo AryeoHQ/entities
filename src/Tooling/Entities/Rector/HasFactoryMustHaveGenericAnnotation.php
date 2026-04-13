@@ -18,7 +18,7 @@ use Tooling\Rules\Attributes\NodeType;
  * @extends Rule<Class_>
  */
 #[NodeType(Class_::class)]
-final class ModelMustHaveHasFactory extends Rule
+final class HasFactoryMustHaveGenericAnnotation extends Rule
 {
     /**
      * @param  Class_  $node
@@ -27,26 +27,48 @@ final class ModelMustHaveHasFactory extends Rule
     {
         return $this->inherits($node, Model::class)
             && $this->inherits($node, Entity::class)
-            && $this->doesNotInherit($node, HasFactory::class);
+            && $this->hasDirectHasFactoryWithoutGeneric($node);
     }
 
     /**
      * @param  Class_  $node
      */
-    public function handle(Node $node): Node
+    public function handle(Node $node): null|Node
     {
-        $this->addTrait($node, HasFactory::class);
-
-        $factoryFqcn = $this->deriveFactoryFqcn($node);
         $traitUse = $this->findHasFactoryTraitUse($node);
 
-        if ($traitUse !== null) {
-            $traitUse->setDocComment(new Doc(
-                sprintf('/** @use HasFactory<\%s> */', $factoryFqcn),
-            ));
+        if ($traitUse === null) {
+            return null;
         }
 
+        $factoryFqcn = $this->deriveFactoryFqcn($node);
+
+        $traitUse->setDocComment(new Doc(
+            sprintf('/** @use HasFactory<\%s> */', $factoryFqcn),
+        ));
+
         return $node;
+    }
+
+    private function hasDirectHasFactoryWithoutGeneric(Class_ $node): bool
+    {
+        foreach ($node->stmts as $stmt) {
+            if (! $stmt instanceof TraitUse) {
+                continue;
+            }
+
+            foreach ($stmt->traits as $trait) {
+                if (! $this->isHasFactory($trait)) {
+                    continue;
+                }
+
+                $docComment = $stmt->getDocComment();
+
+                return $docComment === null || ! str_contains($docComment->getText(), '@use HasFactory<');
+            }
+        }
+
+        return false;
     }
 
     private function findHasFactoryTraitUse(Class_ $node): null|TraitUse
@@ -57,15 +79,20 @@ final class ModelMustHaveHasFactory extends Rule
             }
 
             foreach ($stmt->traits as $trait) {
-                $name = ltrim($trait->toString(), '\\');
-
-                if ($name === HasFactory::class || $name === 'HasFactory') {
+                if ($this->isHasFactory($trait)) {
                     return $stmt;
                 }
             }
         }
 
         return null;
+    }
+
+    private function isHasFactory(Node\Name $trait): bool
+    {
+        $name = ltrim($trait->toString(), '\\');
+
+        return $name === HasFactory::class || $name === 'HasFactory';
     }
 
     private function deriveFactoryFqcn(Class_ $node): string
