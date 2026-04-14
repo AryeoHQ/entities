@@ -16,13 +16,13 @@
         }
     },
     "require": {
-        "aryeo/eloquent-filters": "0.0.14",
+        "aryeo/eloquent-filters": "0.0.15",
         "laravel/framework": "^12.37",
         "laravel/prompts": "^0.3.8",
         "nikic/php-parser": "^5.7",
         "phpstan/phpstan": "^2.1",
         "symfony/console": "^7.4",
-        "aryeo/tooling-laravel": "0.0.34"
+        "aryeo/tooling-laravel": "0.0.35"
     },
     "require-dev": {
         "orchestra/testbench": "^10.6",
