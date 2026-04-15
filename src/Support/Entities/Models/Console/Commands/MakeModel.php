@@ -39,8 +39,6 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
 
     protected $type = 'Model';
 
-    public string $stub = __DIR__.'/stubs/model.stub';
-
     public Stringable $nameInput {
         get => str($this->argument('name'));
     }
@@ -198,7 +196,7 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
 
         $name = str($this->getNameInput())->singular();
 
-        $this->entity = new Model(name: $name, baseNamespace: $this->baseNamespace);
+        $this->entity = resolve(Model::class, ['name' => $name, 'baseNamespace' => $this->baseNamespace]);
     }
 
     private function makeFactory(): void

@@ -35,8 +35,6 @@ class MakeEntity extends GeneratorCommand implements GeneratesEntity
 
     protected $type = 'Entity';
 
-    public string $stub = __DIR__.'/stubs/entity.stub';
-
     public Stringable $nameInput {
         get => str($this->argument('name'));
     }
@@ -82,7 +80,7 @@ class MakeEntity extends GeneratorCommand implements GeneratesEntity
 
         $name = str($this->getNameInput())->singular();
 
-        $this->entity = new EntityReference(name: $name, baseNamespace: $this->baseNamespace);
+        $this->entity = resolve(EntityReference::class, ['name' => $name, 'baseNamespace' => $this->baseNamespace]);
     }
 
     private function makePolicy(): void

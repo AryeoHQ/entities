@@ -13,6 +13,10 @@ final class Policy extends GenericClass
         get => str('Policy');
     }
 
+    public Stringable $stubPath {
+        get => str(__DIR__.'/stubs/policy.stub');
+    }
+
     public Entity $entity {
         get => Entity::fromFqcn(
             $this->baseNamespace->append('\\', (string) str((string) $this->baseNamespace->afterLast('\\'))->singular()),

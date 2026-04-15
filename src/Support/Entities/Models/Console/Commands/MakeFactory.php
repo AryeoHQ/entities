@@ -21,8 +21,6 @@ class MakeFactory extends FactoryMakeCommand implements GeneratesForEntity
     use GeneratorCommandCompatibility;
     use RetrievesModel;
 
-    public string $stub = __DIR__.'/stubs/factory/factory.stub';
-
     public Stringable $nameInput {
         get => $this->reference->name;
     }
