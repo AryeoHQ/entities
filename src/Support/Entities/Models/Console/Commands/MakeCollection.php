@@ -24,8 +24,6 @@ class MakeCollection extends GeneratorCommand implements GeneratesForEntity
 
     protected $type = 'Collection';
 
-    public string $stub = __DIR__.'/stubs/collection/collection.stub';
-
     public Stringable $nameInput {
         get => $this->reference->name;
     }

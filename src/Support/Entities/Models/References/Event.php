@@ -13,6 +13,10 @@ final class Event extends GenericClass
         get => str('Events');
     }
 
+    public Stringable $stubPath {
+        get => str(__DIR__.'/stubs/event.stub');
+    }
+
     public Stringable $key {
         get => str((string) $this->name)->camel();
     }

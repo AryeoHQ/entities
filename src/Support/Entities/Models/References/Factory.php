@@ -13,6 +13,10 @@ final class Factory extends GenericClass
         get => str('Factory');
     }
 
+    public Stringable $stubPath {
+        get => str(__DIR__.'/stubs/factory.stub');
+    }
+
     public Model $model {
         get => Model::fromFqcn(
             $this->baseNamespace->append('\\', (string) str((string) $this->baseNamespace->afterLast('\\'))->singular()),

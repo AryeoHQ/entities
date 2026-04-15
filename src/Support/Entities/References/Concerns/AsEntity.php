@@ -23,10 +23,10 @@ trait AsEntity
     }
 
     public Policy $policy {
-        get => new Policy(name: 'Policy', baseNamespace: $this->namespace);
+        get => resolve(Policy::class, ['name' => 'Policy', 'baseNamespace' => $this->namespace]);
     }
 
     public Provider $provider {
-        get => new Provider(name: 'Provider', baseNamespace: $this->namespace);
+        get => resolve(Provider::class, ['name' => 'Provider', 'baseNamespace' => $this->namespace]);
     }
 }

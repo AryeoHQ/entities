@@ -15,4 +15,8 @@ class Entity extends GenericClass
     public null|Stringable $subNamespace {
         get => str("Entities\\{$this->plural}");
     }
+
+    public Stringable $stubPath {
+        get => str(__DIR__.'/stubs/entity.stub');
+    }
 }

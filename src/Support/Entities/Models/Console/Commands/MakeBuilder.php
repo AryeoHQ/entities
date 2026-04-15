@@ -24,8 +24,6 @@ class MakeBuilder extends GeneratorCommand implements GeneratesForEntity
 
     protected $type = 'Model Query Builder';
 
-    public string $stub = __DIR__.'/stubs/builder/builder.stub';
-
     public Stringable $nameInput {
         get => $this->reference->name;
     }

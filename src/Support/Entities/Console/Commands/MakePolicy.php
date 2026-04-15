@@ -26,8 +26,6 @@ class MakePolicy extends PolicyMakeCommand implements GeneratesForEntity
     /** @use RetrievesEntity<Entity> */
     use RetrievesEntity;
 
-    public string $stub = __DIR__.'/stubs/policy/policy.stub';
-
     public Stringable $nameInput {
         get => $this->reference->name;
     }

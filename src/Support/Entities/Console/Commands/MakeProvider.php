@@ -24,8 +24,6 @@ class MakeProvider extends ProviderMakeCommand implements GeneratesForEntity
     /** @use RetrievesEntity<Entity> */
     use RetrievesEntity;
 
-    public string $stub = __DIR__.'/stubs/provider.stub';
-
     public Stringable $nameInput {
         get => $this->reference->name;
     }

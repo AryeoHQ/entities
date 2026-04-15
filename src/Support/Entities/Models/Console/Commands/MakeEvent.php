@@ -18,8 +18,6 @@ class MakeEvent extends EventMakeCommand implements GeneratesForEntity
     use GeneratorCommandCompatibility;
     use RetrievesModel;
 
-    public string $stub = __DIR__.'/stubs/event/event.stub';
-
     public Stringable $nameInput {
         get => str($this->argument('name'));
     }

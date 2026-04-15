@@ -13,6 +13,10 @@ final class Builder extends GenericClass
         get => str('Builder');
     }
 
+    public Stringable $stubPath {
+        get => str(__DIR__.'/stubs/builder.stub');
+    }
+
     public Model $model {
         get => Model::fromFqcn(
             $this->baseNamespace->append('\\', (string) str((string) $this->baseNamespace->afterLast('\\'))->singular()),
