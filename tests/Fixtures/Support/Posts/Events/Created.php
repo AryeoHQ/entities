@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Fixtures\Support\Posts\Events;
 
 use Support\Entities\Events\Contracts\ForEntity;
-use Support\Entities\Events\Entity\IdentifiesEntity;
+use Support\Entities\Events\IdentifiesEntity\IdentifiesEntity;
 use Support\Entities\Events\Provides\HasEntity;
 use Tests\Fixtures\Support\Posts\Post;
 

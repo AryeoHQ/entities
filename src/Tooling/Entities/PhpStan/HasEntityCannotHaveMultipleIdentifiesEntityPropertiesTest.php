@@ -8,7 +8,7 @@ use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Events\Entity\IdentifiesEntity;
+use Support\Entities\Events\IdentifiesEntity\IdentifiesEntity;
 use Support\Entities\Events\Provides\HasEntity;
 use Tests\Tooling\Concerns\GetsFixtures;
 

@@ -6,7 +6,7 @@ namespace Tests\Fixtures\Tooling\Entities;
 
 use Support\Entities\Contracts\Entity;
 use Support\Entities\Events\Contracts\ForEntity;
-use Support\Entities\Events\Entity\IdentifiesEntity;
+use Support\Entities\Events\IdentifiesEntity\IdentifiesEntity;
 use Support\Entities\Events\Provides\HasEntity;
 
 final class HasEntityWithMultipleIdentifiesEntityAttributes implements ForEntity

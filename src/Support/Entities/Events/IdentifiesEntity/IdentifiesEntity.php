@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Support\Entities\Events\Entity;
+namespace Support\Entities\Events\IdentifiesEntity;
 
 use Attribute;
 

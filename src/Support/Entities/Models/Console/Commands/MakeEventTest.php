@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\Events\Contracts\ForEntity;
-use Support\Entities\Events\Entity\IdentifiesEntity;
+use Support\Entities\Events\IdentifiesEntity\IdentifiesEntity;
 use Support\Entities\Events\Provides\HasEntity;
 use Support\Entities\Models\References\Event;
 use Support\Entities\Models\References\Model;
@@ -44,6 +44,7 @@ class MakeEventTest extends TestCase implements TestsGeneratesForEntity
 
         $contents = File::get($this->reference->filePath->toString());
 
+        $this->assertStringContainsString('use '.IdentifiesEntity::class.';', $contents);
         $this->assertStringContainsString('#['.class_basename(IdentifiesEntity::class).']', $contents);
     }
 

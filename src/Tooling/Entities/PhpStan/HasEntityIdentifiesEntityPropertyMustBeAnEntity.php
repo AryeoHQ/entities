@@ -13,7 +13,7 @@ use PhpParser\Node\Stmt\Property;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\ObjectType;
 use Support\Entities\Contracts\Entity;
-use Support\Entities\Events\Entity\IdentifiesEntity;
+use Support\Entities\Events\IdentifiesEntity\IdentifiesEntity;
 use Support\Entities\Events\Provides\HasEntity;
 use Tooling\PhpStan\Rules\Rule;
 use Tooling\Rules\Attributes\NodeType;
