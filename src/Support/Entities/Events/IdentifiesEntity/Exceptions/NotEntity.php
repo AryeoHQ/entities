@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Support\Entities\Events\Entity\Exceptions;
+namespace Support\Entities\Events\IdentifiesEntity\Exceptions;
 
 use Illuminate\Support\Stringable;
 use LogicException;
 use Support\Entities\Contracts\Entity;
 use Support\Entities\Events;
-use Support\Entities\Events\Entity\IdentifiesEntity;
+use Support\Entities\Events\IdentifiesEntity\IdentifiesEntity;
 
 final class NotEntity extends LogicException
 {

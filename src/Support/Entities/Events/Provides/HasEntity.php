@@ -8,10 +8,10 @@ use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionProperty;
 use Support\Entities\Contracts\Entity;
-use Support\Entities\Events\Entity\Exceptions\MultipleDefined;
-use Support\Entities\Events\Entity\Exceptions\NotDefined;
-use Support\Entities\Events\Entity\Exceptions\NotEntity;
-use Support\Entities\Events\Entity\IdentifiesEntity;
+use Support\Entities\Events\IdentifiesEntity\Exceptions\MultipleDefined;
+use Support\Entities\Events\IdentifiesEntity\Exceptions\NotDefined;
+use Support\Entities\Events\IdentifiesEntity\Exceptions\NotEntity;
+use Support\Entities\Events\IdentifiesEntity\IdentifiesEntity;
 
 trait HasEntity
 {
