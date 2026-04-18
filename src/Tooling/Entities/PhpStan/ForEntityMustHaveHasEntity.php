@@ -8,7 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PHPStan\Analyser\Scope;
 use Support\Entities\Events\Contracts\ForEntity;
-use Support\Entities\Events\Provides\EntityDriven;
+use Support\Entities\Events\Provides\HasEntity;
 use Tooling\PhpStan\Rules\Rule;
 use Tooling\Rules\Attributes\NodeType;
 
@@ -16,7 +16,7 @@ use Tooling\Rules\Attributes\NodeType;
  * @extends Rule<Class_>
  */
 #[NodeType(Class_::class)]
-final class ForEntityMustHaveEntityDriven extends Rule
+final class ForEntityMustHaveHasEntity extends Rule
 {
     /**
      * @param  Class_  $node
@@ -24,7 +24,7 @@ final class ForEntityMustHaveEntityDriven extends Rule
     public function shouldHandle(Node $node, Scope $scope): bool
     {
         return $this->inherits($node, ForEntity::class)
-            && $this->doesNotInherit($node, EntityDriven::class);
+            && $this->doesNotInherit($node, HasEntity::class);
     }
 
     /**
@@ -33,9 +33,13 @@ final class ForEntityMustHaveEntityDriven extends Rule
     public function handle(Node $node, Scope $scope): void
     {
         $this->error(
-            message: 'ForEntity must use EntityDriven.',
-            line: $node->getStartLine(),
-            identifier: 'entities.entityDriven',
+            message: sprintf(
+                '%s must use %s.',
+                class_basename(ForEntity::class),
+                class_basename(HasEntity::class)
+            ),
+            line: $node->name?->getStartLine() ?? $node->getStartLine(),
+            identifier: 'entities.ForEntity.HasEntity.required',
         );
     }
 }

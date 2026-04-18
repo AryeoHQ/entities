@@ -33,9 +33,9 @@ final class ModelMustImplementEntity extends Rule
     public function handle(Node $node, Scope $scope): void
     {
         $this->error(
-            message: Model::class.' must implement `Entity` contract.',
+            message: sprintf('Model must implement %s contract.', class_basename(Entity::class)),
             line: $node->extends?->getStartLine() ?? $node->getStartLine(),
-            identifier: 'entities.interface',
+            identifier: 'entities.Model.Entity.required',
         );
     }
 }

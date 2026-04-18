@@ -51,9 +51,9 @@ final class ModelMustNotDefineScopeMethods extends Rule
     public function handle(Node $node, Analyser\Scope $scope): void
     {
         $this->scopedMethods->each(fn (ClassMethod $method) => $this->error(
-            message: 'Model must not define scope methods; define scopes on the Builder instead.',
+            message: 'Scopes should be defined on the Builder.',
             line: $method->name->getStartLine(),
-            identifier: 'entities.scopeMethod',
+            identifier: 'entities.Model.ScopeMethod.notAllowed',
         ));
     }
 

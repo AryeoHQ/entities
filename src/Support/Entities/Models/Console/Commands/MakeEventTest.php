@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Support\Entities\Models\Console\Commands;
 
+use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Entities\Events\Attributes\Alias;
 use Support\Entities\Events\Contracts\ForEntity;
-use Support\Entities\Events\Provides\EntityDriven;
+use Support\Entities\Events\Entity\IdentifiesEntity;
+use Support\Entities\Events\Provides\HasEntity;
 use Support\Entities\Models\References\Event;
 use Support\Entities\Models\References\Model;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
@@ -35,7 +36,7 @@ class MakeEventTest extends TestCase implements TestsGeneratesForEntity
     }
 
     #[Test]
-    public function it_generates_an_event_with_the_alias_attribute(): void
+    public function it_generates_an_event_with_the_identifies_entity_attribute(): void
     {
         Composer::fake();
 
@@ -43,11 +44,11 @@ class MakeEventTest extends TestCase implements TestsGeneratesForEntity
 
         $contents = File::get($this->reference->filePath->toString());
 
-        $this->assertStringContainsString('#['.class_basename(Alias::class)."('".$this->entity->variableName.".created')]", $contents);
+        $this->assertStringContainsString('#['.class_basename(IdentifiesEntity::class).']', $contents);
     }
 
     #[Test]
-    public function it_generates_an_event_that_uses_the_entity_driven_trait(): void
+    public function it_generates_an_event_that_uses_dispatchable(): void
     {
         Composer::fake();
 
@@ -55,7 +56,19 @@ class MakeEventTest extends TestCase implements TestsGeneratesForEntity
 
         $contents = File::get($this->reference->filePath->toString());
 
-        $this->assertStringContainsString('use '.class_basename(EntityDriven::class).';', $contents);
+        $this->assertStringContainsString('use '.class_basename(Dispatchable::class).';', $contents);
+    }
+
+    #[Test]
+    public function it_generates_an_event_that_uses_has_entity(): void
+    {
+        Composer::fake();
+
+        $this->artisan($this->command, $this->baselineInput)->assertSuccessful();
+
+        $contents = File::get($this->reference->filePath->toString());
+
+        $this->assertStringContainsString('use '.class_basename(HasEntity::class).';', $contents);
     }
 
     #[Test]
@@ -79,19 +92,7 @@ class MakeEventTest extends TestCase implements TestsGeneratesForEntity
 
         $contents = File::get($this->reference->filePath->toString());
 
-        $this->assertStringContainsString('public readonly '.$this->entity->name.' $entity', $contents);
-    }
-
-    #[Test]
-    public function it_kebab_cases_multi_word_semantic_event_names(): void
-    {
-        Composer::fake();
-
-        $this->artisan($this->command, ['name' => 'ForceDeleted', '--entity' => $this->entity->fqcn->toString()])->assertSuccessful();
-
-        $contents = File::get($this->entity->event('ForceDeleted')->filePath->toString());
-
-        $this->assertStringContainsString('#['.class_basename(Alias::class)."('".$this->entity->variableName.".force-deleted')]", $contents);
+        $this->assertStringContainsString('public readonly '.$this->entity->name.' $'.$this->entity->variableName, $contents);
     }
 
     #[Test]

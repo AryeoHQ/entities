@@ -35,9 +35,9 @@ final class ModelMustHaveUseFactory extends Rule
     public function handle(Node $node, Scope $scope): void
     {
         $this->error(
-            message: 'Model must have a #[UseFactory] attribute.',
+            message: sprintf('Model must be annotated with #[%s].', class_basename(UseFactory::class)),
             line: $node->name?->getStartLine() ?? $node->getStartLine(),
-            identifier: 'entities.useFactory',
+            identifier: 'entities.Model.UseFactory.required',
         );
     }
 }

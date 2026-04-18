@@ -11,7 +11,7 @@ use Support\Entities\Contracts\Entity;
 use Tests\Fixtures\Support\Posts\Events\Created;
 
 #[UseFactory(Factory::class)]
-class Post extends Model implements Entity
+class Post extends Model implements Entity // @phpstan-ignore entities.Model.CollectedBy.required, entities.Model.UseEloquentBuilder.required, entities.Model.UsePolicy.required, entities.Model.HasUuids.required
 {
     /** @use HasFactory<Factory> */
     use HasFactory;

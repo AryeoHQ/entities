@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tooling\Entities\PhpStan;
 
-use Illuminate\Database\Eloquent\Model;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use Support\Entities\Contracts\Entity;
 use Tests\Tooling\Concerns\GetsFixtures;
 
 /** @extends RuleTestCase<ModelMustImplementEntity> */
@@ -42,7 +42,7 @@ class ModelMustImplementEntityTest extends RuleTestCase
     {
         $this->analyse([$this->getFixturePath('Entities/ModelWithoutEntity.php')], [
             [
-                Model::class.' must implement `Entity` contract.',
+                sprintf('Model must implement %s contract.', class_basename(Entity::class)),
                 9,
             ],
         ]);

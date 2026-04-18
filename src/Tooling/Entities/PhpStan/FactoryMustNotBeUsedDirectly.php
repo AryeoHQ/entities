@@ -62,7 +62,7 @@ final class FactoryMustNotBeUsedDirectly extends Rule
         $this->error(
             message: 'Direct use of Factory is disallowed; use `Model::factory()` instead.',
             line: $node->getStartLine(),
-            identifier: 'entities.factoryDirectUsage',
+            identifier: 'entities.Model.Factory.directUsageNotAllowed',
         );
     }
 

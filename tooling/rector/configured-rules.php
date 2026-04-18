@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Support\Entities\Contracts\Entity;
 use Support\Entities\Events\Contracts\ForEntity;
-use Support\Entities\Events\Provides\EntityDriven;
+use Support\Entities\Events\Provides\HasEntity;
 use Tooling\Rector\Rules\AddInterfaceByClass;
 use Tooling\Rector\Rules\AddTraitByInterface;
 
@@ -12,6 +12,6 @@ return [
         Model::class => Entity::class,
     ],
     AddTraitByInterface::class => [
-        ForEntity::class => EntityDriven::class,
+        ForEntity::class => HasEntity::class,
     ],
 ];

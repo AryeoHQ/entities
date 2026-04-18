@@ -4,4 +4,4 @@ declare(strict_types=1);
 
 namespace Tests\Fixtures\Tooling\Entities;
 
-final class ClassWithoutEntityDriven {}
+final class BareClass {}

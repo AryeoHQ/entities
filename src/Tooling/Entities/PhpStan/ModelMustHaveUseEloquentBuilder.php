@@ -35,9 +35,9 @@ final class ModelMustHaveUseEloquentBuilder extends Rule
     public function handle(Node $node, Scope $scope): void
     {
         $this->error(
-            message: 'Model must have a #[UseEloquentBuilder] attribute.',
+            message: sprintf('Model must be annotated with #[%s].', class_basename(UseEloquentBuilder::class)),
             line: $node->name?->getStartLine() ?? $node->getStartLine(),
-            identifier: 'entities.useEloquentBuilder',
+            identifier: 'entities.Model.UseEloquentBuilder.required',
         );
     }
 }

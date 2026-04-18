@@ -9,6 +9,4 @@ use Illuminate\Database\Eloquent\Collection;
 /**
  * @extends Collection<int, \{{ domainModelNamespace }}>
  */
-final class {{ domainModelCollectionName }} extends Collection
-{
-}
+final class {{ domainModelCollectionName }} extends Collection {}

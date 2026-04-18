@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tooling\Entities\PhpStan;
 
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -30,7 +31,7 @@ class ModelMustHaveCollectedByTest extends RuleTestCase
     #[Test]
     public function it_passes_when_class_is_not_an_entity(): void
     {
-        $this->analyse([$this->getFixturePath('Entities/ClassWithoutEntityDriven.php')], []);
+        $this->analyse([$this->getFixturePath('Entities/BareClass.php')], []);
     }
 
     #[Test]
@@ -38,7 +39,7 @@ class ModelMustHaveCollectedByTest extends RuleTestCase
     {
         $this->analyse([$this->getFixturePath('Entities/ModelWithoutCollectedBy.php')], [
             [
-                'Model must have a #[CollectedBy] attribute.',
+                sprintf('Model must be annotated with #[%s].', class_basename(CollectedBy::class)),
                 13,
             ],
         ]);
