@@ -35,9 +35,9 @@ final class ModelMustHaveHasUuids extends Rule
     public function handle(Node $node, Scope $scope): void
     {
         $this->error(
-            message: 'Model must use the HasUuids.',
-            line: $node->getStartLine(),
-            identifier: 'entities.uuids',
+            message: sprintf('Model must use %s.', class_basename(HasUuids::class)),
+            line: $node->name?->getStartLine() ?? $node->getStartLine(),
+            identifier: 'entities.Model.HasUuids.required',
         );
     }
 }

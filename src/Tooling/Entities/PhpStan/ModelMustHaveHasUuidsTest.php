@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tooling\Entities\PhpStan;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -30,7 +31,7 @@ class ModelMustHaveHasUuidsTest extends RuleTestCase
     #[Test]
     public function it_passes_when_class_does_not_implement_entity(): void
     {
-        $this->analyse([$this->getFixturePath('Entities/ClassWithoutEntityDriven.php')], []);
+        $this->analyse([$this->getFixturePath('Entities/BareClass.php')], []);
     }
 
     #[Test]
@@ -38,7 +39,7 @@ class ModelMustHaveHasUuidsTest extends RuleTestCase
     {
         $this->analyse([$this->getFixturePath('Entities/ModelWithoutHasUuids.php')], [
             [
-                'Model must use the HasUuids.',
+                sprintf('Model must use %s.', class_basename(HasUuids::class)),
                 10,
             ],
         ]);

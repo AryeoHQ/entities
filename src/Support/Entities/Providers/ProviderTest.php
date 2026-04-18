@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Support\Entities\Providers;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Events\Dispatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -85,11 +84,5 @@ class ProviderTest extends TestCase
         (new Provider($this->app))->boot();
 
         $this->assertFalse(Relation::requiresMorphMap());
-    }
-
-    #[Test]
-    public function it_registers_the_dispatcher_mixin(): void
-    {
-        $this->assertTrue(Dispatcher::hasMacro('withoutSerializesModels'));
     }
 }

@@ -6,13 +6,9 @@ namespace Tests\Fixtures\Tooling\Entities;
 
 use Support\Entities\Contracts\Entity;
 use Support\Entities\Events\Contracts\ForEntity;
-use Support\Entities\Events\Provides\EntityDriven;
 
-#[\AllowDynamicProperties]
-final class ForEntityWithoutAlias implements ForEntity
+final class ForEntityWithoutHasEntity implements ForEntity
 {
-    use EntityDriven;
-
     public readonly Entity $entity;
 
     public function __construct(Entity $entity)

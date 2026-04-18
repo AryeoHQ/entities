@@ -30,21 +30,17 @@ class ModelMustNotDefineScopeMethodsTest extends RuleTestCase
     #[Test]
     public function it_passes_when_class_is_not_an_entity(): void
     {
-        $this->analyse([$this->getFixturePath('Entities/ClassWithoutEntityDriven.php')], []);
+        $this->analyse([$this->getFixturePath('Entities/BareClass.php')], []);
     }
 
     #[Test]
     public function it_fails_when_model_defines_scope_methods(): void
     {
+        $message = 'Scopes should be defined on the Builder.';
+
         $this->analyse([$this->getFixturePath('Entities/ModelWithScopeMethod.php')], [
-            [
-                'Model must not define scope methods; define scopes on the Builder instead.',
-                14,
-            ],
-            [
-                'Model must not define scope methods; define scopes on the Builder instead.',
-                20,
-            ],
+            [$message, 14],
+            [$message, 20],
         ]);
     }
 }

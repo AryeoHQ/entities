@@ -9,6 +9,10 @@ use Tooling\GeneratorCommands\References\GenericClass;
 
 final class Provider extends GenericClass
 {
+    public null|Stringable $subNamespace {
+        get => str('Provider');
+    }
+
     public Stringable $stubPath {
         get => str(__DIR__.'/stubs/provider.stub');
     }

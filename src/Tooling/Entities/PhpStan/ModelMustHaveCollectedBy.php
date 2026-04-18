@@ -35,9 +35,9 @@ final class ModelMustHaveCollectedBy extends Rule
     public function handle(Node $node, Scope $scope): void
     {
         $this->error(
-            message: 'Model must have a #[CollectedBy] attribute.',
+            message: sprintf('Model must be annotated with #[%s].', class_basename(CollectedBy::class)),
             line: $node->name?->getStartLine() ?? $node->getStartLine(),
-            identifier: 'entities.collectedBy',
+            identifier: 'entities.Model.CollectedBy.required',
         );
     }
 }

@@ -1,17 +1,6 @@
-parameters:
-    ignoreErrors:
-        -
-            identifier: trait.unused
-            paths:
-                - ../../src/Support/Entities/Events/Provides/EntityDriven.php
-                - ../../src/Support/Entities/Events/Concerns/SerializesModels.php
 services:
     -
         class: Tooling\Entities\PhpStan\ModelMustImplementEntity
-        tags:
-            - phpstan.rules.rule
-    -
-        class: Tooling\Entities\PhpStan\ForEntityMustHaveAlias
         tags:
             - phpstan.rules.rule
     -
@@ -19,7 +8,15 @@ services:
         tags:
             - phpstan.rules.rule
     -
-        class: Tooling\Entities\PhpStan\ForEntityMustHaveEntityDriven
+        class: Tooling\Entities\PhpStan\ForEntityMustHaveHasEntity
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\HasEntityMustHaveIdentifiesEntity
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\HasEntityIdentifiesEntityPropertyMustBeAnEntity
         tags:
             - phpstan.rules.rule
     -
@@ -51,6 +48,10 @@ services:
         tags:
             - phpstan.rules.rule
     -
-        class: Tooling\Entities\PhpStan\EntityDrivenMustUseSerializesModels
+        class: Tooling\Entities\PhpStan\HasEntityCannotHaveMultipleIdentifiesEntityProperties
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\HasEntityMustImplementForEntity
         tags:
             - phpstan.rules.rule

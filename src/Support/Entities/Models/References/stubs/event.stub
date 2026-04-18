@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace {{ namespace }};
 
-use Support\Entities\Events\Attributes\Alias;
+use Illuminate\Foundation\Events\Dispatchable;
+use Support\Entities\Events\Entity\IdentifiesEntity;
 use Support\Entities\Events\Contracts\ForEntity;
-use Support\Entities\Events\Provides\EntityDriven;
+use Support\Entities\Events\Provides\HasEntity;
 use {{ domainModelNamespace }};
 
-#[Alias('{{ domainModelSemanticEventName }}')]
 final class {{ class }} implements ForEntity
 {
-    use EntityDriven;
+    use Dispatchable;
+    use HasEntity;
 
-    public readonly {{ domainModelName }} $entity;
+    #[IdentifiesEntity]
+    public readonly {{ domainModelName }} ${{ domainModelVariableName }};
 
-    public function __construct({{ domainModelName }} $entity)
+    public function __construct({{ domainModelName }} ${{ domainModelVariableName }})
     {
-        $this->entity = $entity;
+        $this->{{ domainModelVariableName }} = ${{ domainModelVariableName }};
     }
 }

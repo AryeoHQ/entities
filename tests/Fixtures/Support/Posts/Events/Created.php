@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Fixtures\Support\Posts\Events;
 
-use Support\Entities\Events\Attributes\Alias;
 use Support\Entities\Events\Contracts\ForEntity;
-use Support\Entities\Events\Provides\EntityDriven;
+use Support\Entities\Events\Entity\IdentifiesEntity;
+use Support\Entities\Events\Provides\HasEntity;
 use Tests\Fixtures\Support\Posts\Post;
 
-#[Alias('post.created')]
 final class Created implements ForEntity
 {
-    use EntityDriven;
+    use HasEntity;
 
-    public readonly Post $entity;
+    #[IdentifiesEntity]
+    public readonly Post $post;
 
-    public function __construct(Post $entity)
+    public function __construct(Post $post)
     {
-        $this->entity = $entity;
+        $this->post = $post;
     }
 }

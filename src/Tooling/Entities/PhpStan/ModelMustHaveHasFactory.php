@@ -35,9 +35,9 @@ final class ModelMustHaveHasFactory extends Rule
     public function handle(Node $node, Scope $scope): void
     {
         $this->error(
-            message: 'Model must use the HasFactory trait.',
-            line: $node->getStartLine(),
-            identifier: 'entities.hasFactory',
+            message: sprintf('Model must use %s.', class_basename(HasFactory::class)),
+            line: $node->name?->getStartLine() ?? $node->getStartLine(),
+            identifier: 'entities.Model.HasFactory.required',
         );
     }
 }

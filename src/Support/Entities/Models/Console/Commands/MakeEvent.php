@@ -41,11 +41,11 @@ class MakeEvent extends EventMakeCommand implements GeneratesForEntity
         return str_replace([
             '{{ domainModelNamespace }}',
             '{{ domainModelName }}',
-            '{{ domainModelSemanticEventName }}',
+            '{{ domainModelVariableName }}',
         ], [
             $this->entity->fqcn->ltrim('\\')->toString(),
             $this->entity->name->toString(),
-            $this->reference->semanticName->toString(),
+            $this->entity->variableName->toString(),
         ], GeneratorCommand::buildClass($name)); // Does not call parent::buildClass() to skip base command's operations
     }
 
