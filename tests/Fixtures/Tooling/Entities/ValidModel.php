@@ -10,15 +10,22 @@ use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\HasBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Support\Entities\Contracts\Entity;
 
+/**
+ * @mixin ValidBuilder
+ */
 #[CollectedBy(ValidCollection::class)]
 #[UseEloquentBuilder(ValidBuilder::class)]
 #[UseFactory(ValidFactory::class)]
 #[UsePolicy(ValidPolicy::class)]
 class ValidModel extends Model implements Entity
 {
+    /** @use HasBuilder<ValidBuilder> */
+    use HasBuilder;
+
     /** @use HasFactory<ValidFactory> */
     use HasFactory;
 

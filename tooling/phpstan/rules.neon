@@ -28,6 +28,14 @@ services:
         tags:
             - phpstan.rules.rule
     -
+        class: Tooling\Entities\PhpStan\ModelMustHaveHasBuilder
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Tooling\Entities\PhpStan\ModelMustHaveBuilderMixin
+        tags:
+            - phpstan.rules.rule
+    -
         class: Tooling\Entities\PhpStan\ModelMustHaveUseFactory
         tags:
             - phpstan.rules.rule
