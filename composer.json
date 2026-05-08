@@ -16,13 +16,13 @@
         }
     },
     "require": {
-        "aryeo/eloquent-filters": "0.0.16",
+        "aryeo/eloquent-filters": "0.0.17",
         "laravel/framework": "^12.37",
         "laravel/prompts": "^0.3.8",
         "nikic/php-parser": "^5.7",
         "phpstan/phpstan": "^2.1",
         "symfony/console": "^7.4",
-        "aryeo/tooling-laravel": "0.0.36"
+        "aryeo/tooling-laravel": "0.0.37"
     },
     "require-dev": {
         "orchestra/testbench": "^10.6",
@@ -69,9 +69,34 @@
         },
         "tooling": {
             "rector": {
-                "configured_rules": "tooling/rector/configured-rules.php"
+                "configured_rules": "tooling/rector/configured-rules.php",
+                "config": {
+                    "paths": [
+                        "src",
+                        "tests/Fixtures/Support",
+                        "workbench"
+                    ]
+                }
             },
-            "phpstan": "tooling/phpstan/rules.neon"
+            "phpstan": {
+                "rules": "tooling/phpstan/rules.neon",
+                "config": {
+                    "paths": [
+                        "src",
+                        "tests/Fixtures/Support",
+                        "workbench"
+                    ]
+                }
+            },
+            "pint": {
+                "config": {
+                    "paths": [
+                        "src",
+                        "tests",
+                        "workbench"
+                    ]
+                }
+            }
         }
     }
 }
