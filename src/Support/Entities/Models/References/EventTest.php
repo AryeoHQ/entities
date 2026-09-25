@@ -44,6 +44,14 @@ class EventTest extends TestCase implements TestsReference
     }
 
     #[Test]
+    public function it_camel_cases_multi_word_model_names_in_semantic_names(): void
+    {
+        $event = new Event(name: 'Creating', baseNamespace: '\\Workbench\\App\\Entities\\BlogPosts');
+
+        $this->assertSame('blogPost.creating', $event->semanticName->toString());
+    }
+
+    #[Test]
     public function it_hydrates_the_model_from_namespace(): void
     {
         $model = $this->subject->model;
