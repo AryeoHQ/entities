@@ -29,6 +29,6 @@ final class Event extends GenericClass
 
     /** The semantic event name (e.g. 'post.creating', 'post.force-deleted'). */
     public Stringable $semanticName {
-        get => $this->model->variableName->append('.', (string) $this->name->kebab());
+        get => $this->model->name->snake()->append('.', (string) $this->name->kebab());
     }
 }

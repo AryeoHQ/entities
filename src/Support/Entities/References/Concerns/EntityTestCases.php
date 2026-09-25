@@ -40,6 +40,14 @@ trait EntityTestCases
     }
 
     #[Test]
+    public function it_camel_cases_multi_word_variable_names(): void
+    {
+        $entity = new ($this->subject::class)(name: 'BlogPost', baseNamespace: 'Workbench\\App\\');
+
+        $this->assertSame('blogPost', $entity->variableName->toString());
+    }
+
+    #[Test]
     public function it_derives_file_path(): void
     {
         $this->assertStringEndsWith('Entities/Posts/Post.php', $this->subject->filePath->toString());
