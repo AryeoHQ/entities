@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace {{ namespace }};
 
-use Support\Database\Eloquent\Contracts\Filterable;
-use Support\Database\Eloquent\HasFilters;
+use Support\Search\Database\Contracts\Filterable;
+use Support\Search\Database\HasFilters;
 
 /**
  * @template TModel of \{{ domainModelNamespace }}
