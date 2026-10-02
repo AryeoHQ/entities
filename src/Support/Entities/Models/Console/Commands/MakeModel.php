@@ -22,6 +22,8 @@ use Support\Entities\Console\Commands\MakeProvider;
 use Support\Entities\Console\Contracts\GeneratesEntity;
 use Support\Entities\Contracts\Entity as EntityContract;
 use Support\Entities\Models\References\Model;
+use Support\Search\Scout\Contracts\Searchable;
+use Support\Search\Scout\InteractsWithSearchEngine;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -88,6 +90,10 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
         $baseClassFqcn = $this->resolveBaseClass();
         $stub = str_replace('{{ baseClass }}', class_basename($baseClassFqcn), $stub);
 
+        if ($this->option('searchable')) {
+            $stub = str_replace('implements Entity', 'implements Entity, Searchable', $stub);
+        }
+
         $imports = $this->buildModelImports();
         $attributes = $this->buildModelAttributes();
         $body = $this->buildModelBody();
@@ -120,6 +126,11 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
             'use '.$this->resolveBaseClass().';',
             'use '.EntityContract::class.';',
         ])->when(
+            $this->option('searchable'),
+            fn ($imports) => $imports
+                ->push('use '.Searchable::class.';')
+                ->push('use '.InteractsWithSearchEngine::class.';')
+        )->when(
             $this->option('builder'),
             fn ($imports) => $imports
                 ->push('use '.$this->entity->builder->fqcn->ltrim('\\').';')
@@ -178,6 +189,11 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
         )
             ->push('    use '.class_basename(HasUuids::class).';')
             ->when(
+                $this->option('searchable'),
+                fn ($body) => $body
+                    ->push('    use '.class_basename(InteractsWithSearchEngine::class).';')
+            )
+            ->when(
                 $this->option('events'),
                 fn ($body) => $body
                     ->push('')
@@ -187,6 +203,18 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
                     ->push('    protected $dispatchesEvents = [')
                     ->push($this->getObservableEventsString())
                     ->push('    ];'))
+            ->when(
+                $this->option('searchable'),
+                fn ($body) => $body
+                    ->push('')
+                    ->push('    /**')
+                    ->push('     * @return array<string, mixed>')
+                    ->push('     */')
+                    ->push('    public function toSearchableArray(): array')
+                    ->push('    {')
+                    ->push('        return $this->toArray();')
+                    ->push('    }')
+            )
             ->implode("\n");
     }
 
@@ -309,6 +337,7 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
             new InputOption('collection', 'c', InputOption::VALUE_NEGATABLE, 'Create a new collection for the entity', true),
             new InputOption('events', 'e', InputOption::VALUE_NEGATABLE, 'Create semantic events for the entity', true),
             new InputOption('provider', null, InputOption::VALUE_NEGATABLE, 'Create a new service provider for the entity', true),
+            new InputOption('searchable', null, InputOption::VALUE_NONE, 'Make the model searchable via Scout using InteractsWithSearchEngine'),
             new InputOption('pivot', 'p', InputOption::VALUE_NONE, 'Indicates the generated model should be a custom intermediate table model'),
             new InputOption('morph-pivot', null, InputOption::VALUE_NONE, 'Indicates the generated model should be a custom polymorphic intermediate table model'),
             new InputOption('force', null, InputOption::VALUE_NONE, 'Create the class even if it already exists'),

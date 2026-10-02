@@ -18,6 +18,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Support\Entities\Contracts\Entity as EntityContract;
 use Support\Entities\Models\References\Model;
+use Support\Search\Scout\Contracts\Searchable;
+use Support\Search\Scout\InteractsWithSearchEngine;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
@@ -286,5 +288,40 @@ class MakeModelTest extends TestCase implements TestsGeneratesEntity
 
         $this->artisan($this->command, [...$this->baselineInput, '--pivot' => true, '--morph-pivot' => true])
             ->assertFailed();
+    }
+
+    #[Test]
+    public function searchable_model_includes_searchable_trait_and_contract(): void
+    {
+        Composer::fake();
+
+        $this->artisan($this->command, [...$this->baselineInput, '--searchable' => true])
+            ->assertSuccessful();
+
+        $model = File::get($this->entity->filePath->toString());
+
+        $this->assertStringContainsString('use '.InteractsWithSearchEngine::class.';', $model);
+        $this->assertStringContainsString('use '.class_basename(InteractsWithSearchEngine::class).';', $model);
+
+        $this->assertStringContainsString('use '.Searchable::class.';', $model);
+        $this->assertStringContainsString('implements '.class_basename(EntityContract::class).', '.class_basename(Searchable::class), $model);
+
+        $this->assertStringContainsString('public function toSearchableArray(): array', $model);
+        $this->assertStringContainsString('return $this->toArray();', $model);
+    }
+
+    #[Test]
+    public function default_model_does_not_include_searchable(): void
+    {
+        Composer::fake();
+
+        $this->artisan($this->command, $this->baselineInput)
+            ->assertSuccessful();
+
+        $model = File::get($this->entity->filePath->toString());
+
+        $this->assertStringNotContainsString('InteractsWithSearchEngine', $model);
+        $this->assertStringNotContainsString('toSearchableArray', $model);
+        $this->assertStringNotContainsString(', Searchable', $model);
     }
 }
