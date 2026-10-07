@@ -6,9 +6,9 @@
             "type": "vcs",
             "url": "https://github.com/AryeoHQ/tooling-laravel"
         },
-        "eloquent-filters": {
+        "eloquent-search": {
             "type": "vcs",
-            "url": "https://github.com/AryeoHQ/eloquent-filters"
+            "url": "https://github.com/AryeoHQ/eloquent-search"
         },
         "primitives": {
             "type": "vcs",
@@ -16,13 +16,13 @@
         }
     },
     "require": {
-        "aryeo/eloquent-filters": "0.0.18",
         "laravel/framework": "^12.37",
         "laravel/prompts": "^0.3.8",
         "nikic/php-parser": "^5.7",
         "phpstan/phpstan": "^2.1",
         "symfony/console": "^7.4",
-        "aryeo/tooling-laravel": "0.0.39"
+        "aryeo/tooling-laravel": "0.0.39",
+        "aryeo/eloquent-search": "^0.0.19"
     },
     "require-dev": {
         "orchestra/testbench": "^10.6",
