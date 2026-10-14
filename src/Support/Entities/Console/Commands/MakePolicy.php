@@ -26,6 +26,15 @@ class MakePolicy extends PolicyMakeCommand implements GeneratesForEntity
     /** @use RetrievesEntity<Entity> */
     use RetrievesEntity;
 
+    /**
+     * Laravel 13's parent signature would skip getArguments() and getOptions(), and that
+     * version has no $name. Clear the signature and set the name so both versions register
+     * make:policy from these methods.
+     */
+    protected $name = 'make:policy';
+
+    protected $signature;
+
     public Stringable $nameInput {
         get => $this->reference->name;
     }
