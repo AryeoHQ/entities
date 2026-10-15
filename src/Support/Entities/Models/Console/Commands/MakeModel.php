@@ -39,6 +39,15 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
 
     protected $type = 'Model';
 
+    /**
+     * Laravel 13's parent signature would skip getArguments() and getOptions(), and that
+     * version has no $name. Clear the signature and set the name so both versions register
+     * make:model from these methods.
+     */
+    protected $name = 'make:model';
+
+    protected $signature;
+
     public Stringable $nameInput {
         get => str($this->argument('name'));
     }

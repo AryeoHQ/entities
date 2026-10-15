@@ -21,6 +21,15 @@ class MakeFactory extends FactoryMakeCommand implements GeneratesForEntity
     use GeneratorCommandCompatibility;
     use RetrievesModel;
 
+    /**
+     * Laravel 13's parent signature would skip getArguments() and getOptions(), and that
+     * version has no $name. Clear the signature and set the name so both versions register
+     * make:factory from these methods.
+     */
+    protected $name = 'make:factory';
+
+    protected $signature;
+
     public Stringable $nameInput {
         get => $this->reference->name;
     }
