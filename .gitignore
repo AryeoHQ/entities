@@ -13,3 +13,4 @@ workbench/*
 !workbench/app
 workbench/app/*
 !workbench/app/.gitkeep
+.vscode/

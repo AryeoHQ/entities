@@ -19,7 +19,7 @@ trait AsEntity
     }
 
     public Stringable $variableName {
-        get => $this->name->lower();
+        get => $this->name->camel();
     }
 
     public Policy $policy {
