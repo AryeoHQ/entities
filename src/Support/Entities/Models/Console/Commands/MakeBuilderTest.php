@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Support\Database\Eloquent\Contracts\Filterable;
 use Support\Entities\Models\References\Model;
+use Support\Search\Database\Contracts\Filterable;
+use Support\Search\Database\Provides\HasFilters;
 use Tests\Support\Entities\Console\Contracts\TestsGeneratesForEntity;
 use Tests\Support\Entities\Models\Concerns\ProvidesModel;
 use Tests\TestCase;
@@ -43,8 +44,11 @@ class MakeBuilderTest extends TestCase implements TestsGeneratesForEntity
 
         $builder = File::get($this->reference->filePath->toString());
 
+        $this->assertStringContainsString('use '.Filterable::class.';', $builder);
+        $this->assertStringContainsString('use '.HasFilters::class.';', $builder);
         $this->assertStringContainsString('extends \\'.Builder::class, $builder);
         $this->assertStringContainsString('implements '.class_basename(Filterable::class), $builder);
+        $this->assertStringContainsString('use '.class_basename(HasFilters::class).';', $builder);
 
         $this->assertTrue(File::exists($this->reference->test->filePath->toString()));
     }

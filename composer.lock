@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2945e136d9cf38c8e03571f3c5884074",
+    "content-hash": "3c1bb2ab73a01d9a7fa87be72e24e2a6",
     "packages": [
         {
-            "name": "aryeo/eloquent-filters",
-            "version": "0.0.18",
+            "name": "aryeo/eloquent-search",
+            "version": "0.0.19",
             "source": {
                 "type": "git",
-                "url": "https://github.com/AryeoHQ/eloquent-filters.git",
-                "reference": "4dbc5614692a1696b09333b90f6454a99ce0f676"
+                "url": "https://github.com/AryeoHQ/eloquent-search.git",
+                "reference": "ea7fd3e256e681956786adfb82228ed30763de32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AryeoHQ/eloquent-filters/zipball/4dbc5614692a1696b09333b90f6454a99ce0f676",
-                "reference": "4dbc5614692a1696b09333b90f6454a99ce0f676",
+                "url": "https://api.github.com/repos/AryeoHQ/eloquent-search/zipball/ea7fd3e256e681956786adfb82228ed30763de32",
+                "reference": "ea7fd3e256e681956786adfb82228ed30763de32",
                 "shasum": ""
             },
             "require": {
@@ -39,7 +39,7 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Support\\Database\\Eloquent\\Providers\\Provider"
+                        "Support\\Search\\Database\\Providers\\Provider"
                     ]
                 },
                 "tooling": {
@@ -96,18 +96,18 @@
                     "email": "robfo@zillowgroup.com"
                 }
             ],
-            "description": "A package to add filters to Eloquent query builder scopes.",
-            "homepage": "https://github.com/aryeohq/eloquent-filters",
+            "description": "A package to add search, filtering, and sorting to Eloquent models.",
+            "homepage": "https://github.com/aryeohq/eloquent-search",
             "keywords": [
                 "Aryeo",
                 "eloquent",
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/AryeoHQ/eloquent-filters/tree/0.0.18",
-                "issues": "https://github.com/AryeoHQ/eloquent-filters/issues"
+                "source": "https://github.com/AryeoHQ/eloquent-search/tree/0.0.19",
+                "issues": "https://github.com/AryeoHQ/eloquent-search/issues"
             },
-            "time": "2026-09-16T14:45:00+00:00"
+            "time": "2026-10-06T18:09:07+00:00"
         },
         {
             "name": "aryeo/primitives",

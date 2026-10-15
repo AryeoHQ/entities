@@ -7,4 +7,4 @@ $config = new Configuration;
 
 return $config
     ->addPathRegexToExclude('~Test(Cases)?\.php$~')
-    ->ignoreErrorsOnPackage('aryeo/eloquent-filters', [ErrorType::UNUSED_DEPENDENCY]);
+    ->ignoreErrorsOnPackage('aryeo/eloquent-search', [ErrorType::UNUSED_DEPENDENCY]);
