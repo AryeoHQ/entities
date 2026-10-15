@@ -58,7 +58,8 @@
     "config": {
         "allow-plugins": {
             "aryeo/tooling-laravel": true,
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         }
     },
     "extra": {
