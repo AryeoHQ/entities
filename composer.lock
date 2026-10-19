@@ -4,25 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5a7bb3111248ff42b4a90b853c6ea9c",
+    "content-hash": "f3b9f14b50e329704a901472a80b53d5",
     "packages": [
         {
             "name": "aryeo/eloquent-search",
-            "version": "0.0.20",
+            "version": "0.0.21",
             "source": {
                 "type": "git",
-                "url": "https://github.com/AryeoHQ/eloquent-search",
-                "reference": "71358f98fdc2b4be8029a5953018ce7eaf4dc528"
+                "url": "https://github.com/AryeoHQ/eloquent-search.git",
+                "reference": "50636b26678acb7b3a74f95b57767f4e4a7a6c70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AryeoHQ/eloquent-search/zipball/71358f98fdc2b4be8029a5953018ce7eaf4dc528",
-                "reference": "71358f98fdc2b4be8029a5953018ce7eaf4dc528",
+                "url": "https://api.github.com/repos/AryeoHQ/eloquent-search/zipball/50636b26678acb7b3a74f95b57767f4e4a7a6c70",
+                "reference": "50636b26678acb7b3a74f95b57767f4e4a7a6c70",
                 "shasum": ""
             },
             "require": {
                 "aryeo/primitives": "0.0.13",
-                "aryeo/tooling-laravel": "0.0.40",
+                "aryeo/tooling-laravel": "0.0.41",
                 "directorytree/opensearch-adapter": "^1.2",
                 "directorytree/opensearch-client": "^1.0",
                 "directorytree/opensearch-migrations": "^1.1",
@@ -109,17 +109,17 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/AryeoHQ/eloquent-search/tree/0.0.20",
+                "source": "https://github.com/AryeoHQ/eloquent-search/tree/0.0.21",
                 "issues": "https://github.com/AryeoHQ/eloquent-search/issues"
             },
-            "time": "2026-10-06T18:09:07+00:00"
+            "time": "2026-10-19T17:06:04+00:00"
         },
         {
             "name": "aryeo/primitives",
             "version": "0.0.13",
             "source": {
                 "type": "git",
-                "url": "https://github.com/AryeoHQ/primitives",
+                "url": "https://github.com/AryeoHQ/primitives.git",
                 "reference": "fdee84c83079d14ab6c129b9430da3e72cdd3baa"
             },
             "dist": {
@@ -209,20 +209,24 @@
                 "actions",
                 "laravel"
             ],
+            "support": {
+                "source": "https://github.com/AryeoHQ/primitives/tree/0.0.13",
+                "issues": "https://github.com/AryeoHQ/primitives/issues"
+            },
             "time": "2026-10-15T14:15:38+00:00"
         },
         {
             "name": "aryeo/tooling-laravel",
-            "version": "0.0.40",
+            "version": "0.0.41",
             "source": {
                 "type": "git",
-                "url": "https://github.com/AryeoHQ/tooling-laravel",
-                "reference": "d1635d14a1f1c520875630d66ecd7dfa63ed2898"
+                "url": "https://github.com/AryeoHQ/tooling-laravel.git",
+                "reference": "215de64d5133dda3b87bc6cbaeefa860264c7619"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AryeoHQ/tooling-laravel/zipball/d1635d14a1f1c520875630d66ecd7dfa63ed2898",
-                "reference": "d1635d14a1f1c520875630d66ecd7dfa63ed2898",
+                "url": "https://api.github.com/repos/AryeoHQ/tooling-laravel/zipball/215de64d5133dda3b87bc6cbaeefa860264c7619",
+                "reference": "215de64d5133dda3b87bc6cbaeefa860264c7619",
                 "shasum": ""
             },
             "require": {
@@ -315,7 +319,11 @@
                 }
             ],
             "description": "Development tooling for Laravel",
-            "time": "2026-10-14T22:59:20+00:00"
+            "support": {
+                "source": "https://github.com/AryeoHQ/tooling-laravel/tree/0.0.41",
+                "issues": "https://github.com/AryeoHQ/tooling-laravel/issues"
+            },
+            "time": "2026-10-16T14:53:25+00:00"
         },
         {
             "name": "brick/math",
@@ -12446,7 +12454,9 @@
     "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {},
+    "platform": {
+        "php": "^8.4"
+    },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
