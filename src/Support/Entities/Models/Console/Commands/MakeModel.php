@@ -63,7 +63,7 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
         if ($this->option('pivot') && $this->option('morph-pivot')) {
             $this->components->error('The --pivot and --morph-pivot options are mutually exclusive.');
 
-            return self::FAILURE; // @phpstan-ignore return.void
+            return self::FAILURE; // @phpstan-ignore return.type
         }
 
         $this->prepareEntityReference();
@@ -78,7 +78,7 @@ class MakeModel extends ModelMakeCommand implements GeneratesEntity
         $this->makePolicy();
         $this->makeProvider();
 
-        return self::SUCCESS; // @phpstan-ignore return.void
+        return self::SUCCESS; // @phpstan-ignore return.type
     }
 
     protected function buildClass($name)
